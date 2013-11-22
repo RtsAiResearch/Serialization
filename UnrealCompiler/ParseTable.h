@@ -28,10 +28,10 @@ class ParseTable
     void ComputeFirst();
     void ComputeFollow();
     void ComputeParseTable();
-    void ComputeFirstAux0( string& p_symbol );
-    void ComputeFirstAux1( string& p_productionHead, ProductionType& p_productionBody);
+    void ComputeFirstAux0( const string& p_symbol );
+    void ComputeFirstAux1( const string& p_productionHead, ProductionType& p_productionBody);
     void GetFirst(ProductionBody::ProductionItr p_symbolsBegin, ProductionBody::ProductionItr p_symbolsEnd, set<string>& p_first);
-    void ComputeFollowAux0( string& p_symbol );
+    void ComputeFollowAux0(const string& p_symbol );
     void ComputeSynchSet(const string& p_nonTerminal);
 public:
     ParseTable(Grammar* p_grammar) : m_grammar(p_grammar) { Initialize(); }

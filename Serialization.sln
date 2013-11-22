@@ -1,17 +1,11 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TypeInfoCollector", "TypeInfoCollector\TypeInfoCollector.vcproj", "{2EC19DD0-FF3B-408E-93CC-24FBCDAA6660}"
-	ProjectSection(ProjectDependencies) = postProject
-		{DD11FDAE-53EA-4613-AD3A-1E5D636C90D2} = {DD11FDAE-53EA-4613-AD3A-1E5D636C90D2}
-	EndProjectSection
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TypeInfoCollector", "TypeInfoCollector\TypeInfoCollector.vcxproj", "{2EC19DD0-FF3B-408E-93CC-24FBCDAA6660}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ObjectSerializer", "ObjectSerializer\ObjectSerializer.vcproj", "{DD11FDAE-53EA-4613-AD3A-1E5D636C90D2}"
-	ProjectSection(ProjectDependencies) = postProject
-		{F31617ED-0C0C-4D22-96A0-1779F9E366F5} = {F31617ED-0C0C-4D22-96A0-1779F9E366F5}
-	EndProjectSection
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ObjectSerializer", "ObjectSerializer\ObjectSerializer.vcxproj", "{DD11FDAE-53EA-4613-AD3A-1E5D636C90D2}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UnrealCompiler", "UnrealCompiler\UnrealCompiler.vcproj", "{F31617ED-0C0C-4D22-96A0-1779F9E366F5}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UnrealCompiler", "UnrealCompiler\UnrealCompiler.vcxproj", "{F31617ED-0C0C-4D22-96A0-1779F9E366F5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
