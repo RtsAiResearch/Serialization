@@ -17,11 +17,12 @@ void ParseTable::ComputeFirst()
         itr != m_grammar->NonTerminals.end();
         itr++)
     {
-        ComputeFirstAux0(*itr);
+        const string &str = itr.operator*();
+        ComputeFirstAux0(str);
     }
 }
 //////////////////////////////////////////////////////////////////////////
-void ParseTable::ComputeFirstAux0( string& p_symbol )
+void ParseTable::ComputeFirstAux0( const string& p_symbol )
 {
     // Base case: first is already computed
     if(!m_first[p_symbol].empty())
@@ -45,7 +46,7 @@ void ParseTable::ComputeFirstAux0( string& p_symbol )
     }
 }
 //////////////////////////////////////////////////////////////////////////
-void ParseTable::ComputeFirstAux1(string& p_productionHead, ProductionType& p_productionBody )
+void ParseTable::ComputeFirstAux1(const string& p_productionHead, ProductionType& p_productionBody )
 {
     for(ProductionBody::ProductionItr itr = p_productionBody.begin();
         itr != p_productionBody.end();
@@ -132,7 +133,7 @@ void ParseTable::ComputeFollow()
     }
 }
 //////////////////////////////////////////////////////////////////////////
-void ParseTable::ComputeFollowAux0( string& p_symbol )
+void ParseTable::ComputeFollowAux0( const string& p_symbol )
 {
     // FOLLOW(symbol) is already computed
     if (!(m_follow[p_symbol].empty() ||
