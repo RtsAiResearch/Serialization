@@ -5,17 +5,22 @@
 	#include "Traversable.h"
 #endif
 #include <typeinfo>
-using namespace std;
 
 namespace Serialization
 {
     class Serializable : public Traversable
     {
     public:
-        virtual string          TypeName()  = 0;
+        virtual std::string     TypeName()  = 0;
         virtual int             TypeSize()  = 0;
         virtual Serializable*   Prototype() = 0;
-        string                  CName() { return typeid(*this).name(); }
+        std::string             CName() { return typeid(*this).name(); }
     };
 }
+
+#define OBJECT_SERIALIZABLE(ClassName) \
+	std::string					TypeName()  { return #ClassName; } \
+	int							TypeSize()  { return sizeof(ClassName); } \
+	Serialization::UserObject*	Prototype() { return new ClassName; }	
+
 #endif // SERIALIZABLE_H
