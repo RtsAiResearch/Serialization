@@ -19,6 +19,7 @@ namespace Serialization
 }
 
 #define OBJECT_SERIALIZABLE(ClassName) \
+	public: \
 	std::string					TypeName()  { return #ClassName; } \
 	int							TypeSize()  { return sizeof(ClassName); } \
 	Serialization::UserObject*	Prototype() { return new ClassName; }	
