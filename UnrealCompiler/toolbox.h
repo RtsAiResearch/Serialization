@@ -26,11 +26,11 @@ public:
     template<class T>
     static void MemoryClean(T*& p_ptr)
     {
-        if(p_ptr == NULL)
+        if(p_ptr == nullptr)
             return;
 
         delete p_ptr;
-        p_ptr = NULL;
+        p_ptr = nullptr;
     }
 };
 
