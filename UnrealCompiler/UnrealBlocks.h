@@ -36,5 +36,4 @@ private slots:
     void WriteParseTree();
 };
 
-
 #endif // UNREALBLOCKS_H

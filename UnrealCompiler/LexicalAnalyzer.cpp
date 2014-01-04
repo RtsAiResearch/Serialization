@@ -70,7 +70,6 @@ void LexicalAnalyzer::SetCodeBuffer(CharacterBuffer* p_codeBuffer)
     m_buffer = p_codeBuffer;
 }
 
-
 //////////////////////////////////////////////////////////////////////////
 bool LexicalAnalyzer::IsEndOfFile()
 {

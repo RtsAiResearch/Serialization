@@ -80,5 +80,4 @@ protected:
     static void         ReadTemplateData(TypeNode* p_typeNode, fstream& p_eye);
 };
 
-
 #endif // TYPENODE_H

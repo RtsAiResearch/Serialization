@@ -10,7 +10,7 @@
 #endif
 
 #ifndef TYPETABLE_H
-	#include "TypeTable.h"
+    #include "TypeTable.h"
 #endif
 
 using namespace Serialization;

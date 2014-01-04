@@ -8,12 +8,11 @@
 #include <typeinfo>
 using namespace std;
 
-
 #ifndef SVECTOR_H
     #include "SVector.h"
 #endif
 #ifndef SERIALIZABLE_H
-	#include "Serializable.h"
+    #include "Serializable.h"
 #endif
 
 namespace Serialization

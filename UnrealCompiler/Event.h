@@ -70,7 +70,6 @@ inline void Event<TSender>::Unregister(const BaseDelegate<TSender>* p_handler)
     m_observers.erase(where);
 }
 
-
 template<class TSender>
 inline void Event<TSender>::Call(const TSender* p_sender, void* p_parameter)
 {

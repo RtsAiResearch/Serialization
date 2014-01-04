@@ -15,7 +15,7 @@
 #endif
 
 #ifndef TYPERESOLVER_H
-	#include "TypeResolver.h"
+    #include "TypeResolver.h"
 #endif
 
 string g_TypeInfoPath;

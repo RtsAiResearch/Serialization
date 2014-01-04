@@ -41,7 +41,6 @@ struct TokenType
     {}
 };
 
-
 const int MaxTokenTypes = 128;
 extern int EOFTypeId;
 extern vector<TokenType*> g_TokenTypesMap;

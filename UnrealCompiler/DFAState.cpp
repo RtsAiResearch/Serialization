@@ -1,7 +1,6 @@
 #include "DFAState.h"
 #include "AlphabetFactory.h"
 
-
 //////////////////////////////////////////////////////////////////////////
 DFAState::DFAState(int p_stateId, int p_tokenTypeId)
 {

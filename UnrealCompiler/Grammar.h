@@ -10,7 +10,6 @@ using namespace std;
 
 extern string Epsilon;
 
-
 class Grammar
 {
 public:

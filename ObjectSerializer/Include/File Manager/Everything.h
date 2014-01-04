@@ -2,8 +2,8 @@
 #define EVERYTHING_H
 
 #ifndef _NOEXCLUSIONS
-#include "Exclude.h"	/* Define Preprocessor variables to */
-			/* exclude un-wanted header files. */
+#include "Exclude.h" /* Define Preprocessor variables to */
+            /* exclude un-wanted header files. */
 #endif
 #include "Environment.h"
 #include <windows.h>

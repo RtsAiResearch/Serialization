@@ -19,5 +19,4 @@ public:
     ~DFA();
 };
 
-
 #endif // DFA_H

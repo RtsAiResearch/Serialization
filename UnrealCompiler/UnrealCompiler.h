@@ -20,7 +20,7 @@ class UnrealCompiler
 {
 private:
     LexicalAnalyzer*    m_lexicalAnalyzer;
-	AbstractParser*	    m_parser;
+    AbstractParser*     m_parser;
     AbstractTranslator* m_translator;
     vector<ErrorData*>  m_errors;
 
