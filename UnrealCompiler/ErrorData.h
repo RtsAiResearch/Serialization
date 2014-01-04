@@ -27,7 +27,7 @@ public:
 
 struct ErrorData
 {
-    unsigned		ErrorTypeId;
+    unsigned ErrorTypeId;
     vector<string>  Parameter;
     int             Row;
     int             Column;

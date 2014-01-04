@@ -9,7 +9,7 @@ UnrealCompiler::UnrealCompiler()
     m_lexicalAnalyzer = new LexicalAnalyzer();
     m_lexicalAnalyzer->Fail += new LexicalAnalyzerToCompilerDelegate(this, &UnrealCompiler::ScannerFailHandler);
 
-	m_parser = new PredictiveParser(m_lexicalAnalyzer);
+    m_parser = new PredictiveParser(m_lexicalAnalyzer);
     m_parser->Fail += new AbstractParserToCompilerDelegate(this, &UnrealCompiler::ParserFailHandler);
 
     m_translator = new SyntaxDirectedTranslator(m_parser->Grammar());
@@ -65,7 +65,7 @@ void UnrealCompiler::TranslatorFailHandler(const AbstractTranslator* p_sender, v
 void UnrealCompiler::Reset()
 {
     m_lexicalAnalyzer->Reset();
-	m_parser->Reset();
+    m_parser->Reset();
     m_errors.clear();
 }
 
@@ -91,5 +91,4 @@ UnrealCompiler::~UnrealCompiler(void)
     Toolbox::MemoryClean(m_parser);
     Toolbox::MemoryClean(m_translator);
 }
-
 

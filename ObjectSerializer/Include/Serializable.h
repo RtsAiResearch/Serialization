@@ -2,7 +2,7 @@
 #define SERIALIZABLE_H
 
 #ifndef TRAVERSABLE_H
-	#include "Traversable.h"
+    #include "Traversable.h"
 #endif
 #include <typeinfo>
 
@@ -19,9 +19,9 @@ namespace Serialization
 }
 
 #define OBJECT_SERIALIZABLE(ClassName) \
-	public: \
-	std::string					TypeName()  { return #ClassName; } \
-	int							TypeSize()  { return sizeof(ClassName); } \
-	Serialization::UserObject*	Prototype() { return new ClassName; }	
+    public: \
+    std::string TypeName()  { return #ClassName; } \
+    int TypeSize()  { return sizeof(ClassName); } \
+    Serialization::UserObject* Prototype() { return new ClassName; } 
 
 #endif // SERIALIZABLE_H

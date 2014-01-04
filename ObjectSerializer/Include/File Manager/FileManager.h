@@ -2,7 +2,7 @@
 #define FILEMANAGER_H
 
 #ifndef EVERYTHING_H
-	#include "Everything.h"
+    #include "Everything.h"
 #endif
 
 #include <vector>
@@ -24,8 +24,8 @@ public:
     void PopDir();
     const TCHAR* GetCurrentDir();
     vector<string> GetFiles(const TCHAR* p_dirPath, char* p_filter);
-	static FileManager& Instance() { static FileManager instance; return instance; }
-	#define g_FileManager FileManager::Instance()
+    static FileManager& Instance() { static FileManager instance; return instance; }
+    #define g_FileManager FileManager::Instance()
 };
 
 #endif // FILEMANAGER_H

@@ -29,5 +29,4 @@ inline ErrorFactory& ErrorFactory::Instance()
 
 #define g_ErrorFactory ErrorFactory::Instance()
 
-
 #endif // ERRORFACTORY_H

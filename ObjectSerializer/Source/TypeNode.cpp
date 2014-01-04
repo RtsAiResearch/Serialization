@@ -1,5 +1,5 @@
 #ifndef TYPENODE_H
-	#include "TypeNode.h"
+    #include "TypeNode.h"
 #endif
 
 #include <cassert>

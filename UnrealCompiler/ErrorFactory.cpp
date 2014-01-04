@@ -17,8 +17,8 @@ void ErrorFactory::GetFormattedError(const ErrorData* p_errorData, int p_errorId
 {
     ErrorDescription*   errorDesc;
     stringstream        errorStream;
-	const unsigned		bufferSize = 256;
-    char				buffer[bufferSize];
+    const unsigned bufferSize = 256;
+    char buffer[bufferSize];
 
     assert(g_ErrorDescriptions.size() > 0 && p_errorData->ErrorTypeId < g_ErrorDescriptions.size());
 

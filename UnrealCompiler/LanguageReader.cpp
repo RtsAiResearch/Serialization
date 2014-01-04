@@ -37,7 +37,6 @@ char LanguageReader::GetSpecialCharacter( const string& p_specialChar )
 }
 
 
-
 //////////////////////////////////////////////////////////////////////////
 void LanguageReader::ReadVariables(ifstream& p_eye)
 {
@@ -133,7 +132,6 @@ void LanguageReader::ReadTokenTypes(ifstream& p_eye )
     g_TokenTypesMap[EOFTypeId] = new TokenType(EOFTypeId, "EOF");
 
 }
-
 
 //////////////////////////////////////////////////////////////////////////
 void LanguageReader::ReadStates(ifstream& p_eye)

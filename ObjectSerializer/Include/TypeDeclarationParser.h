@@ -13,7 +13,7 @@ using namespace std;
 #endif
 
 #ifndef TYPENODE_H
-	#include "TypeNode.h"
+    #include "TypeNode.h"
 #endif
 
 class TypeDeclarationParser : public AbstractParser

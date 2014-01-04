@@ -1,9 +1,9 @@
 #ifndef OBJECTFORMATTER_H
-	#include "ObjectFormatter.h"
+    #include "ObjectFormatter.h"
 #endif
 
 #ifndef FILEMANAGER_H
-	#include "FileManager.h"
+    #include "FileManager.h"
 #endif
 
 #include <Windows.h>

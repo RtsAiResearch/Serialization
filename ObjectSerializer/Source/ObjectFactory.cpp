@@ -1,5 +1,5 @@
 #ifndef OBJECTFACTORY_H
-	#include "ObjectFactory.h"
+    #include "ObjectFactory.h"
 #endif
 
 #include <cassert>
@@ -9,8 +9,8 @@
 void ObjectFactory::AddPrototype(UserObject* p_prototype)
 {
     assert(p_prototype != NULL);
-	string cname = p_prototype->CName();
-	string tname = p_prototype->TypeName();
+    string cname = p_prototype->CName();
+    string tname = p_prototype->TypeName();
     m_cNameToFullNameTable[cname] = tname;
     m_prototypes[p_prototype->TypeName()] = p_prototype;
 }
@@ -35,12 +35,12 @@ UserObject* ObjectFactory::GetObject(const string& p_typeName)
         where = m_prototypes.find(p_typeName);
     }
 
-	if (where == m_prototypes.end())
-	{
-		char buffer[256];
-		sprintf_s(buffer, sizeof(buffer), "Failed to retrieve object '%s'", p_typeName.c_str());
-		throw std::exception(buffer);
-	}
+    if (where == m_prototypes.end())
+    {
+        char buffer[256];
+        sprintf_s(buffer, sizeof(buffer), "Failed to retrieve object '%s'", p_typeName.c_str());
+        throw std::exception(buffer);
+    }
 
     return where->second;
 }

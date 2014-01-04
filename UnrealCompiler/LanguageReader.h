@@ -41,7 +41,6 @@ public:
 };
 
 
-
 #define g_LanguageReader LanguageReader::Instance()
 
 #endif // LanguageReader_H
