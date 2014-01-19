@@ -11,17 +11,17 @@ namespace Serialization
     class Serializable : public Traversable
     {
     public:
-        virtual std::string     TypeName()  = 0;
-        virtual int             TypeSize()  = 0;
-        virtual Serializable*   Prototype() = 0;
-        std::string             CName() { return typeid(*this).name(); }
+        virtual std::string     TypeName()  const = 0;
+        virtual int             TypeSize()  const = 0;
+        virtual Serializable*   Prototype() const = 0;
+        std::string             CName() const { return typeid(*this).name(); }
     };
 }
 
 #define OBJECT_SERIALIZABLE(ClassName) \
 	public: \
-	std::string					TypeName()  { return #ClassName; } \
-	int							TypeSize()  { return sizeof(ClassName); } \
-	Serialization::UserObject*	Prototype() { return new ClassName; }	
+	std::string					TypeName()  const { return #ClassName; } \
+	int							TypeSize()  const { return sizeof(ClassName); } \
+	Serialization::UserObject*	Prototype() const { return new ClassName; }	
 
 #endif // SERIALIZABLE_H

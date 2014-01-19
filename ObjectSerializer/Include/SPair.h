@@ -16,9 +16,9 @@ namespace Serialization
     public:
                         SPair() : pair(TKey(), TValue()) {}
                         SPair(TKey p_first, TValue p_second) : pair(p_first, p_second) {}
-        string          TypeName()      { return "SPair"; }
-        int             TypeSize()      { return sizeof(SPair<TKey, TValue>); }
-        Serializable*   Prototype()     { return new SPair<TKey, TValue>; }
+        string          TypeName() const      { return "SPair"; }
+        int             TypeSize() const      { return sizeof(SPair<TKey, TValue>); }
+        Serializable*   Prototype() const     { return new SPair<TKey, TValue>; }
     protected:
 
         void InitializeAddressesAux()
