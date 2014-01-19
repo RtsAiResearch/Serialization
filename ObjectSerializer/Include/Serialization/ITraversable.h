@@ -12,11 +12,11 @@ namespace Serialization
         ~Iterator() {}
     };
 
-    class Traversable
+    class ITraversable
     {
     public:
         virtual Iterator* GetIterator() = 0;
-        ~Traversable() {}
+        ~ITraversable() {}
     };
 }
 

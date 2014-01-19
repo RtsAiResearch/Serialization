@@ -19,9 +19,9 @@ namespace Serialization
         TKey    m_temp;
     public:
         Iterator*       GetIterator()   { return new SetIterator<TKey>(this); }
-        string          TypeName()      { return "SSet"; }
-        int             TypeSize()      { return sizeof(SSet<TKey>); }
-        Serializable*   Prototype()     { return new SSet<TKey>; }
+        string          TypeName() const      { return "SSet"; }
+        int             TypeSize() const      { return sizeof(SSet<TKey>); }
+        ISerializable*   Prototype() const     { return new SSet<TKey>; }
         int             ContainerCount(){ return size(); }
         void            Clear()         { clear(); }
         char*           GetTemp()       { return reinterpret_cast<char*>(&m_temp); }

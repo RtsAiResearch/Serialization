@@ -21,10 +21,10 @@ namespace Serialization
                         SVector() {}
                         SVector(size_t p_initialSize, T p_initialValue) : vector(p_initialSize, p_initialValue) {}
                         SVector(const vector<T>& p_other) { this->clear(); insert(this->begin(), p_other.begin(), p_other.end()); }
-        Iterator*       GetIterator()   { return new VectorIterator<T>(this); }
-        string          TypeName()      { return "SVector"; }
-        int             TypeSize()      { return sizeof(SVector<T>); }
-        Serializable*   Prototype()     { return new SVector<T>; }
+        Iterator*       GetIterator()       { return new VectorIterator<T>(this); }
+        string          TypeName() const    { return "SVector"; }
+        int             TypeSize() const    { return sizeof(SVector<T>); }
+        ISerializable*   Prototype() const  { return new SVector<T>; }
         int             ContainerCount(){ return size(); }
         void            Clear()         { clear(); }
         char*           GetTemp()       { return reinterpret_cast<char*>(&m_temp); }

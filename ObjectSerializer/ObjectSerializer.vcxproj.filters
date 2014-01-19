@@ -80,9 +80,6 @@
     <ClInclude Include="Include\Serialization\ObjectFactory.h">
       <Filter>Header Files\Container</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Serialization\Serializable.h">
-      <Filter>Header Files\Container</Filter>
-    </ClInclude>
     <ClInclude Include="Include\Container\SMap.h">
       <Filter>Header Files\Container</Filter>
     </ClInclude>
@@ -93,9 +90,6 @@
       <Filter>Header Files\Container</Filter>
     </ClInclude>
     <ClInclude Include="Include\Container\SVector.h">
-      <Filter>Header Files\Container</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Serialization\Traversable.h">
       <Filter>Header Files\Container</Filter>
     </ClInclude>
     <ClInclude Include="Include\Serialization\UserObject.h">
@@ -109,6 +103,12 @@
     </ClInclude>
     <ClInclude Include="Include\Serialization\TypeTable.h">
       <Filter>Header Files\Type</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Serialization\ISerializable.h">
+      <Filter>Header Files\Container</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Serialization\ITraversable.h">
+      <Filter>Header Files\Container</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

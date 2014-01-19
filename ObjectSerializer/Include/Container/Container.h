@@ -2,12 +2,12 @@
 #define CONTAINER_H
 
 #ifndef SERIALIZABLE_H
-    #include "Serializable.h"
+    #include "ISerializable.h"
 #endif
 
 namespace Serialization
 {
-    class Container : public Serializable
+    class Container : public ISerializable
     {
     public:
         virtual int         ContainerCount()    = 0;

@@ -2,14 +2,13 @@
 #define SMAP_H
 
 #include <map>
-using namespace std;
 
 #ifndef CONTAINER_H
 #include "Container.h"
 #endif
 
 #ifndef SPAIR_H
-    #include "SPair.h"
+#include "SPair.h"
 #endif
 
 namespace Serialization
@@ -18,14 +17,14 @@ namespace Serialization
     class MapIterator;
 
     template<class TKey, class TValue>
-    class SMap : public map<TKey, TValue>, public Container
+    class SMap : public std::map<TKey, TValue>, public Container
     {
         SPair<TKey, TValue> m_temp;
     public:
         Iterator*       GetIterator()   { return new MapIterator<TKey, TValue>(this); }
-        string          TypeName()      { return "SMap"; }
-        int             TypeSize()      { return sizeof(SMap<TKey, TValue>); }
-        Serializable*   Prototype()     { return new SMap<TKey, TValue>; }
+        string          TypeName() const      { return "SMap"; }
+        int             TypeSize() const      { return sizeof(SMap<TKey, TValue>); }
+        ISerializable*  Prototype() const     { return new SMap<TKey, TValue>; }
         int             ContainerCount(){ return size(); }
         void            Clear()         { clear(); }
         char*           GetTemp()       { return reinterpret_cast<char*>(&m_temp); }
