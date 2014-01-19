@@ -7,7 +7,7 @@
 #endif
 
 #ifndef SVECTOR_H
-	#include "SVector.h"
+    #include "SVector.h"
 #endif
 
 #include <fstream>

@@ -50,7 +50,6 @@ public:
     void setupModelData(const ParseTreeNode *parent);
     void setupModelDataAux(TreeItem* dstParent, const ParseTreeNode *srcParent);
 
-
 private:
 
     TreeItem *rootItem;

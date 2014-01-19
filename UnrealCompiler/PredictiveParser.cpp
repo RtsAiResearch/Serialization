@@ -167,7 +167,6 @@ void PredictiveParser::OnSyntaxError(const Token* p_token )
     }
     errorData = new ErrorData(ERROR_SyntaxError, parameters, p_token->Value->Row, p_token->Value->Column);
 
-
     Fail(this, errorData);
 }
 //////////////////////////////////////////////////////////////////////////

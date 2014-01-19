@@ -2,11 +2,11 @@
 #define TYPERESOLVER_H
 
 #ifndef TYPETABLE_H
-	#include "TypeTable.h"
+    #include "TypeTable.h"
 #endif
 
 #ifndef OBJECTFACTORY_H
-	#include "ObjectFactory.h"
+    #include "ObjectFactory.h"
 #endif
 
 #include <set>
@@ -27,7 +27,7 @@ public:
     void        Resolve(TypeTable& p_typeTable);
     void        Specialize(TypeNode* p_specialization, TypeData& p_typeTemplate, TypeTable& p_typeTable);
 
-	static TypeResolver& Instance() { static TypeResolver instance; return instance; }
+    static TypeResolver& Instance() { static TypeResolver instance; return instance; }
 #define     g_TypeResolver TypeResolver::Instance()
 };
 

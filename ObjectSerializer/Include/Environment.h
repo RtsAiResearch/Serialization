@@ -27,7 +27,7 @@
 
 /* Define _MT when running in a threaded environment
 Better Alternative: Set from the
-	Project...Settings...C/C++...CodeGeneration category  . */
+    Project...Settings...C/C++...CodeGeneration category  . */
 //#define _MT
 
 /* Define UTILITY_EXPORTS only if you build a DLL. */
@@ -37,8 +37,8 @@ Better Alternative: Set from the
 //#undef UTILITY_EXPORTS
 //#define UTILITY_EXPORTS
 /* Define _STATICLIB if you are building a static library
-	or if you are linking with static libaries. 
-	Undefine if you are builing a DLL or linking with a DLL. */
+    or if you are linking with static libaries. 
+    Undefine if you are builing a DLL or linking with a DLL. */
 /* Again, it is best and easiest to define this in the project */
 //#define _STATICLIB
 //#undef _STATICLIB

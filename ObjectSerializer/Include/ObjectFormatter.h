@@ -15,11 +15,11 @@ using namespace std;
 #endif
 
 #ifndef TYPETABLE_H
-	#include "TypeTable.h"
+    #include "TypeTable.h"
 #endif
 
 #ifndef OBJECTFACTORY_H
-	#include "ObjectFactory.h"
+    #include "ObjectFactory.h"
 #endif
 
 extern string g_TypeInfoPath;

@@ -1,6 +1,6 @@
 /* support.h */
 /* Definitions of all symbolic constants and common
-	utility functions used throughout the example programs. */
+    utility functions used throughout the example programs. */
 
 /* Define the LIBSPEC modifier for function names and other imported/exported
  * symblols. This is only required when building for Win32; you wouldn't
@@ -45,12 +45,12 @@
 
 /* Limits and constants. */
 
-#define TYPE_FILE 1		/* Used in ls, rm, and lsFP */
+#define TYPE_FILE 1 /* Used in ls, rm, and lsFP */
 #define TYPE_DIR 2
 #define TYPE_DOT 3
 
-#define MAX_OPTIONS 20	/* Max # command line options */
-#define MAX_ARG 1000	/* Max # of command line arguments */
+#define MAX_OPTIONS 20 /* Max # command line options */
+#define MAX_ARG 1000 /* Max # of command line arguments */
 #define MAX_COMMAND_LINE MAX_PATH+50 /* Max size of a command line */
 #define MAX_PATH_LONG 32767  /* Very long path names with \\?\ prefix. */
 #define MAX_NAME 256    /* Name length - users and groups */
@@ -75,7 +75,7 @@
 //
 //DWORD ReadFilePermissions (LPTSTR, LPTSTR, LPTSTR);
 //BOOL ChangeFilePermissions (DWORD, LPTSTR, LPDWORD, LPDWORD);
-///*	Simpler forms available with Visual C++ Version 5.0 */
+///* Simpler forms available with Visual C++ Version 5.0 */
 ////PSECURITY_DESCRIPTOR InitializeSD (DWORD, LPTSTR, LPTSTR, LPDWORD);
 ///* Constants needed by the security functions. */
 
@@ -107,11 +107,11 @@
  */
 
 #define delay_cpu(n)  {\
-	int i=0, j=0;\
-	/* Do some wasteful computations that will not be optimized to nothing */\
-	while (i < n) {\
-		j = (int)(i*i + (float)(2*j)/(float)(i+1));\
-		i++;\
-	}\
+    int i=0, j=0;\
+    /* Do some wasteful computations that will not be optimized to nothing */\
+    while (i < n) {\
+        j = (int)(i*i + (float)(2*j)/(float)(i+1));\
+        i++;\
+    }\
 }
 

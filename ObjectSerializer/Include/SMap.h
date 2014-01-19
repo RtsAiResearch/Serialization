@@ -9,7 +9,7 @@ using namespace std;
 #endif
 
 #ifndef SPAIR_H
-	#include "SPair.h"
+    #include "SPair.h"
 #endif
 
 namespace Serialization
