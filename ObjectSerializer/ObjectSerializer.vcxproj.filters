@@ -50,64 +50,64 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Include\Serialization\ObjectFormatter.h">
+    <ClInclude Include="Include\ObjectFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Serialization\ObjectSerializer.h">
+    <ClInclude Include="Include\ObjectFormatter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Serialization\TypeResolver.h">
+    <ClInclude Include="Include\ObjectSerializer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Include\File Manager\Environment.h">
+    <ClInclude Include="Include\UserObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\SMap.h">
+      <Filter>Header Files\Container</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\SPair.h">
+      <Filter>Header Files\Container</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\SSet.h">
+      <Filter>Header Files\Container</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\SVector.h">
+      <Filter>Header Files\Container</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\ITraversable.h">
+      <Filter>Header Files\Container</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\ISerializable.h">
+      <Filter>Header Files\Container</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Environment.h">
       <Filter>Header Files\FileManager</Filter>
     </ClInclude>
-    <ClInclude Include="Include\File Manager\Everything.h">
+    <ClInclude Include="Include\Everything.h">
       <Filter>Header Files\FileManager</Filter>
     </ClInclude>
-    <ClInclude Include="Include\File Manager\EXCLUDE.H">
+    <ClInclude Include="Include\EXCLUDE.H">
       <Filter>Header Files\FileManager</Filter>
     </ClInclude>
-    <ClInclude Include="Include\File Manager\FileManager.h">
+    <ClInclude Include="Include\FileManager.h">
       <Filter>Header Files\FileManager</Filter>
     </ClInclude>
-    <ClInclude Include="Include\File Manager\support.h">
+    <ClInclude Include="Include\support.h">
       <Filter>Header Files\FileManager</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Container\Container.h">
-      <Filter>Header Files\Container</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Serialization\ObjectFactory.h">
-      <Filter>Header Files\Container</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Container\SMap.h">
-      <Filter>Header Files\Container</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Container\SPair.h">
-      <Filter>Header Files\Container</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Container\SSet.h">
-      <Filter>Header Files\Container</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Container\SVector.h">
-      <Filter>Header Files\Container</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Serialization\UserObject.h">
-      <Filter>Header Files\Container</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Serialization\TypeDeclarationParser.h">
+    <ClInclude Include="Include\TypeNode.h">
       <Filter>Header Files\Type</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Serialization\TypeNode.h">
+    <ClInclude Include="Include\TypeTable.h">
       <Filter>Header Files\Type</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Serialization\TypeTable.h">
+    <ClInclude Include="Include\TypeResolver.h">
       <Filter>Header Files\Type</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Serialization\ISerializable.h">
-      <Filter>Header Files\Container</Filter>
+    <ClInclude Include="Include\TypeDeclarationParser.h">
+      <Filter>Header Files\Type</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Serialization\ITraversable.h">
+    <ClInclude Include="Include\Container.h">
       <Filter>Header Files\Container</Filter>
     </ClInclude>
   </ItemGroup>

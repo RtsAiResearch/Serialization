@@ -11,6 +11,7 @@ enum DataType
     DTYPE_Char,
     DTYPE_Short,
     DTYPE_Int,
+    DTYPE_Unsigned,
     DTYPE_Float,
     DTYPE_Double,
     DYTPE_BasicTypeCount,
@@ -57,7 +58,7 @@ public:
 
             TypeNode() : Type(DTYPE_Undefined), Indirection(false) { Id = ++LastTypeNodeId; ++TypeNodesCount; }
             TypeNode(DataType p_type) : Type(p_type), Indirection(false) { Id = ++LastTypeNodeId; ++TypeNodesCount; }
-            TypeNode* Clone();
+            TypeNode* Clone() const;
     void    SpecializeChildren(TypeNode* p_template, TypeNode* p_specialization);
     void    SpecializeTemplateArguments(TypeNode* p_template, TypeNode* p_specialization);
     void    SubstitueTypeName(const string& p_oldTypeName, const string& p_newTypeName);

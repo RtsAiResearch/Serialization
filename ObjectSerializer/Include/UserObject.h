@@ -25,9 +25,25 @@ namespace Serialization
             Uninitialized   = 0x0f0f0f0f
         };
 
+    
+    public:
+                        UserObject() : m_objectState(Uninitialized) {}
+        Iterator*       GetIterator()   { return new VectorIterator<char*>(&m_membersAddresses); }
+
+        void InitializeAddresses()
+        {
+            // catch any type-casting failure by assuring a predefinded values
+            assert(Initialized == m_objectState || Uninitialized == m_objectState);
+            if(Uninitialized == m_objectState ) 
+            {
+                InitializeAddressesAux();
+                m_objectState = Initialized;
+            }
+        }
+
     private:
-        ObjectState     _objectState;
-        SVector<char*>   _membersaddresses;
+        ObjectState     m_objectState;
+        SVector<char*>   m_membersAddresses;
 
     protected:
         void AddMemberAddress(unsigned nAddresses, ...)
@@ -41,27 +57,17 @@ namespace Serialization
             while(--nAddresses)
             {
                 memberAddress = va_arg(argList, void*);
-                _membersaddresses.push_back(reinterpret_cast<char*>(memberAddress));
+                m_membersAddresses.push_back(reinterpret_cast<char*>(memberAddress));
             }
             va_end (argList) ;
         }
 
         virtual void    InitializeAddressesAux() = 0;
-
-    public:
-                        UserObject() : _objectState(Uninitialized) {}
-        Iterator*       GetIterator()   { return new VectorIterator<char*>(&_membersaddresses); }
-
-        void InitializeAddresses()
-        {
-            // catch any type-casting failure by assuring a predefinded values
-            assert(_objectState == Initialized || _objectState == Uninitialized);
-            if(_objectState == Uninitialized) 
-            {
-                InitializeAddressesAux();
-                _objectState = Initialized;
-            }
-        }
     };
+
+#define OBJECT_MEMBERS(N, ...) \
+    protected: \
+        void InitializeAddressesAux() { AddMemberAddress(N, __VA_ARGS__); }
+
 }
 #endif // USEROBJECT_H

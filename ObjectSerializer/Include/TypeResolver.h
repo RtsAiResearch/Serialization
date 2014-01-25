@@ -19,7 +19,7 @@ class TypeResolver
     void        TypeMemberSubstitution( TypeData& p_tableEntry, TypeTable& p_typeTable, vector<TypeChild>& p_children );
     void        TypeParentSubstitution( TypeData& p_tableEntry, TypeTable& p_typeTable, vector<TypeChild>& p_children );
     void        ShallowTypeSubstitution(const string& p_typeName, TypeTable& p_typeTable, vector<TypeChild>& p_children);
-    TypeNode*   AliasSubstitution(TypeNode* p_typeNode, TypeTable& p_typeTable);
+    TypeNode*   AliasSubstitution(const TypeNode* p_typeNode, const TypeTable& p_typeTable);
     void        SpecializeAux(TypeNode* p_targetType, TypeNode* p_specialization, TypeTable& p_typeTable);
 
 public:

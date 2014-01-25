@@ -295,7 +295,8 @@ void ObjectFormatter::GetAliasNode(Attributes& p_attributes,  TypeTable& p_typeT
 
     TypeNode* aliasNode = m_parser->TypeGraph();
 
-    assert(p_typeTable.find(aliasNode->UserDefinedType) == p_typeTable.end());
+    if (p_typeTable.find(aliasNode->UserDefinedType) != p_typeTable.end())
+        DebugBreak();
 
     if(p_lastTypeRoot != NULL && !p_lastTypeRoot->TemplateArguments.empty())
         aliasNode->SetTemplateArguments(p_lastTypeRoot->TemplateArguments);

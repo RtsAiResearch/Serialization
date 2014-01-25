@@ -31,12 +31,13 @@ void ObjectSerializer::InitializeTypeTable()
 //----------------------------------------------------------------------------------------------
 void ObjectSerializer::InitializeDataTypes()
 {
-    m_basicTypeSize[DTYPE_Bool]   = sizeof(bool);
-    m_basicTypeSize[DTYPE_Char]   = sizeof(char);
-    m_basicTypeSize[DTYPE_Short]  = sizeof(short);
-    m_basicTypeSize[DTYPE_Int]    = sizeof(int);
-    m_basicTypeSize[DTYPE_Float]  = sizeof(float);
-    m_basicTypeSize[DTYPE_Double] = sizeof(double);
+    m_basicTypeSize[DTYPE_Bool]     = sizeof(bool);
+    m_basicTypeSize[DTYPE_Char]     = sizeof(char);
+    m_basicTypeSize[DTYPE_Short]    = sizeof(short);
+    m_basicTypeSize[DTYPE_Int]      = sizeof(int);
+    m_basicTypeSize[DTYPE_Unsigned] = sizeof(unsigned);
+    m_basicTypeSize[DTYPE_Float]    = sizeof(float);
+    m_basicTypeSize[DTYPE_Double]   = sizeof(double);
 };
 //----------------------------------------------------------------------------------------------
 void ObjectSerializer::PerformLateBinding( UserObject* p_object, TypeNode*& p_type )
@@ -133,6 +134,7 @@ int ObjectSerializer::SerializeType(char* p_fieldAddress, TypeNode* p_type, fstr
     case DTYPE_Char:
     case DTYPE_Short:
     case DTYPE_Int:
+    case DTYPE_Unsigned:
     case DTYPE_Float:
     case DTYPE_Double:
         return SerializeBasicType(p_fieldAddress, p_type, p_pen);
@@ -446,6 +448,7 @@ int ObjectSerializer::DeserializeType(char* p_fieldAddress, TypeNode* p_type, fs
     case DTYPE_Char:
     case DTYPE_Short:
     case DTYPE_Int:
+    case DTYPE_Unsigned:
     case DTYPE_Float:
     case DTYPE_Double:
         return DeserializeBasicType(p_fieldAddress, p_type, p_eye);

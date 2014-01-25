@@ -21,7 +21,7 @@ TypeNode::~TypeNode()
     assert(TypeNodesCount >= 0);
 }
 //----------------------------------------------------------------------------------------------
-TypeNode* TypeNode::Clone()
+TypeNode* TypeNode::Clone() const
 {
     TypeNode* clone = new TypeNode(Type);
 
@@ -409,6 +409,8 @@ string  TypeNode::ToString(DataType p_type)
         return "char";
     case DTYPE_Int:
         return "int";
+    case DTYPE_Unsigned:
+        return "unsigned";
     case DTYPE_Float:
         return "float";
     case DTYPE_Double:

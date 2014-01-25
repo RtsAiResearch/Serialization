@@ -2,7 +2,6 @@
 #define SSET_H
 
 #include <set>
-using namespace std;
 
 #ifndef CONTAINER_H
 #include "Container.h"
@@ -14,14 +13,14 @@ namespace Serialization
     class SetIterator;
 
     template<class TKey>
-    class SSet : public set<TKey>, public Container
+    class SSet : public std::set<TKey>, public Container
     {
         TKey    m_temp;
     public:
         Iterator*       GetIterator()   { return new SetIterator<TKey>(this); }
-        string          TypeName() const      { return "SSet"; }
+        std::string     TypeName() const      { return "SSet"; }
         int             TypeSize() const      { return sizeof(SSet<TKey>); }
-        ISerializable*   Prototype() const     { return new SSet<TKey>; }
+        ISerializable*  Prototype() const     { return new SSet<TKey>; }
         int             ContainerCount(){ return size(); }
         void            Clear()         { clear(); }
         char*           GetTemp()       { return reinterpret_cast<char*>(&m_temp); }
@@ -32,11 +31,11 @@ namespace Serialization
     class SetIterator : public Iterator
     {
         bool                            m_initialized;
-        set<TKey>*                      m_set;  
-        typename set<TKey>::iterator    m_current;
+        std::set<TKey>*                      m_set;  
+        typename std::set<TKey>::iterator    m_current;
 
     public:
-        SetIterator(set<TKey>* p_set) :  m_set(p_set), m_current(p_set->begin()), m_initialized(false) {}
+        SetIterator(std::set<TKey>* p_set) :  m_set(p_set), m_current(p_set->begin()), m_initialized(false) {}
 
         char* Current()
         {
