@@ -9,7 +9,6 @@
 #ifndef SVECTOR_H
     #include "SVector.h"
 #endif
-
 #include <fstream>
 #include <cassert>
 #include <algorithm>
@@ -88,10 +87,10 @@ void ObjectSerializer::Serialize(UserObject* p_object, string p_objectFileName)
 {
     fstream pen;
     pen.open(p_objectFileName.c_str(), ios::binary | ios::out);
-    assert(pen.is_open());
+    _ASSERTE(pen.is_open());
 
     const string& typeName = g_ObjectFactory.FromCName(p_object->CName());
-    assert(m_typeTable.find(typeName) != m_typeTable.end());
+    _ASSERTE(m_typeTable.find(typeName) != m_typeTable.end());
 
     TypeData& typeData = m_typeTable[typeName];
     SerializeType(reinterpret_cast<char*>(p_object), typeData.TypeGraph, pen);
@@ -127,7 +126,8 @@ int ObjectSerializer::SerializeType(char* p_fieldAddress, TypeNode* p_type, fstr
             if(p_type->Indirection)
                 fullName.erase(fullName.size() - 1, 1);
 
-            assert(m_typeTable.find(fullName) != m_typeTable.end());
+            _ASSERTE(m_typeTable.find(fullName) != m_typeTable.end());
+
             return SerializeUserDefinedType(p_fieldAddress, m_typeTable[fullName].TypeGraph, p_type->Indirection, p_pen);
         }
     case DTYPE_Bool:
@@ -141,7 +141,7 @@ int ObjectSerializer::SerializeType(char* p_fieldAddress, TypeNode* p_type, fstr
     }
 
     // should not reach here
-    assert(false);
+    _ASSERTE(false);
 
     return 0;
 }
@@ -150,7 +150,7 @@ int ObjectSerializer::SerializeBasicType(char* p_fieldAddress, TypeNode* p_type,
 {
     int size = m_basicTypeSize[p_type->Type];
     bool isNull = false;
-    assert(p_type->Children.size() == 0);
+    _ASSERTE(p_type->Children.size() == 0);
 
     // Continuous pointers to scattered basic-type data
     if(p_type->Indirection)
@@ -198,7 +198,7 @@ int ObjectSerializer::SerializeUserDefinedType(char* p_fieldAddress, TypeNode* p
             PerformLateBinding(object, p_type);
 
             length = typeName.size();
-            assert(length <= MaxTypeNameLength);
+            _ASSERTE(length <= MaxTypeNameLength);
             strcpy(buffer, typeName.c_str());
             buffer[length] = 0;
             p_pen.write(buffer, MaxTypeNameLength + 1);
@@ -209,7 +209,7 @@ int ObjectSerializer::SerializeUserDefinedType(char* p_fieldAddress, TypeNode* p
             unsigned* addr32;
             for(int memberIdx = 0; addresses->MoveNext(); ++memberIdx)    
             {
-                assert(memberIdx < p_type->Children.size());
+                _ASSERTE(memberIdx < p_type->Children.size());
                 addr32 = reinterpret_cast<unsigned*>(addresses->Current());
                 SerializeType(reinterpret_cast<char*>(*addr32), p_type->Children[memberIdx].Ptr32, p_pen);
             }
@@ -225,7 +225,7 @@ int ObjectSerializer::SerializeUserDefinedType(char* p_fieldAddress, TypeNode* p
         unsigned* addr32;
         for(int memberIdx = 0; addresses->MoveNext(); ++memberIdx)    
         {
-            assert(memberIdx < p_type->Children.size());
+            _ASSERTE(memberIdx < p_type->Children.size());
             addr32 = reinterpret_cast<unsigned*>(addresses->Current());
             SerializeType(reinterpret_cast<char*>(*addr32), p_type->Children[memberIdx].Ptr32, p_pen);
         }
@@ -239,14 +239,14 @@ int ObjectSerializer::SerializeUserDefinedType(char* p_fieldAddress, TypeNode* p
 int ObjectSerializer::SerializeArray(char* p_fieldAddress, TypeNode* p_type, fstream& p_pen)
 {
     // not supported for this time
-    assert(false);
+    _ASSERTE(false);
 
     int         size = 0;
     int         length = p_type->Children[0].Val32;
     TypeNode*   type = p_type->Children[1].Ptr32;
     bool        isNull = false;
 
-    assert(p_type->Children.size() == 2);
+    _ASSERTE(p_type->Children.size() == 2);
 
     if(p_type->Indirection)
     {
@@ -322,8 +322,8 @@ int ObjectSerializer::SerializeString(char* p_fieldAddress, TypeNode* p_type, fs
 int ObjectSerializer::SerializeContainerVector(char* p_fieldAddress, TypeNode* p_type, fstream& p_pen)
 {
     // Pointer to vector is not supported
-    assert(p_type->Indirection == false);
-    assert(p_type->TemplateArguments.size() == 1);
+    _ASSERTE(p_type->Indirection == false);
+    _ASSERTE(p_type->TemplateArguments.size() == 1);
 
     Container*  container   = reinterpret_cast<Container*>(p_fieldAddress);
     Iterator*   itr         = container->GetIterator();
@@ -341,8 +341,8 @@ int ObjectSerializer::SerializeContainerVector(char* p_fieldAddress, TypeNode* p
 int ObjectSerializer::SerializeContainerMap(char* p_fieldAddress, TypeNode* p_type, fstream& p_pen)
 {
     // Pointer to map is not supported
-    assert(p_type->Indirection == false);
-    assert(p_type->TemplateArguments.size() == 1);
+    _ASSERTE(p_type->Indirection == false);
+    _ASSERTE(p_type->TemplateArguments.size() == 1);
 
     Container*  container   = reinterpret_cast<Container*>(p_fieldAddress);
     Iterator*   itr         = container->GetIterator();
@@ -360,8 +360,8 @@ int ObjectSerializer::SerializeContainerMap(char* p_fieldAddress, TypeNode* p_ty
 int ObjectSerializer::SerializeContainerSet(char* p_fieldAddress, TypeNode* p_type, fstream& p_pen)
 {
     // Pointer to set is not supported
-    assert(p_type->Indirection == false);
-    assert(p_type->TemplateArguments.size() == 1);
+    _ASSERTE(p_type->Indirection == false);
+    _ASSERTE(p_type->TemplateArguments.size() == 1);
 
     Container*  container   = reinterpret_cast<Container*>(p_fieldAddress);
     Iterator*   itr         = container->GetIterator();
@@ -379,8 +379,8 @@ int ObjectSerializer::SerializeContainerSet(char* p_fieldAddress, TypeNode* p_ty
 int ObjectSerializer::SerializePair(char* p_fieldAddress, TypeNode* p_type, fstream& p_pen)
 {
     // Pointer to pair is not supported
-    assert(p_type->Indirection == false);
-    assert(p_type->TemplateArguments.size() == 2);
+    _ASSERTE(p_type->Indirection == false);
+    _ASSERTE(p_type->TemplateArguments.size() == 2);
 
     UserObject* object = reinterpret_cast<UserObject*>(p_fieldAddress);
     object->InitializeAddresses();
@@ -389,7 +389,7 @@ int ObjectSerializer::SerializePair(char* p_fieldAddress, TypeNode* p_type, fstr
     unsigned* addr32;
     for(int memberIdx = 0; addresses->MoveNext(); ++memberIdx)    
     {
-        assert(memberIdx < p_type->TemplateArguments.size());
+        _ASSERTE(memberIdx < p_type->TemplateArguments.size());
         addr32 = reinterpret_cast<unsigned*>(addresses->Current());
         SerializeType(reinterpret_cast<char*>(*addr32), p_type->TemplateArguments[memberIdx], p_pen);
     }
@@ -401,10 +401,10 @@ void ObjectSerializer::Deserialize(UserObject* p_object, string p_objectFileName
 {
     fstream eye;
     eye.open(p_objectFileName.c_str(), ios::binary | ios::in);
-    assert(eye.is_open());
+    _ASSERTE(eye.is_open());
 
     const string& typeName = g_ObjectFactory.FromCName(p_object->CName());
-    assert(m_typeTable.find(typeName) != m_typeTable.end());
+    _ASSERTE(m_typeTable.find(typeName) != m_typeTable.end());
 
     TypeData& typeData = m_typeTable[typeName];
     DeserializeType(reinterpret_cast<char*>(p_object), typeData.TypeGraph, eye);
@@ -440,7 +440,7 @@ int ObjectSerializer::DeserializeType(char* p_fieldAddress, TypeNode* p_type, fs
             if(p_type->Indirection)
                 fullName.erase(fullName.size() - 1, 1);
 
-            assert(m_typeTable.find(fullName) != m_typeTable.end());
+            _ASSERTE(m_typeTable.find(fullName) != m_typeTable.end());
             return DeserializeUserDefinedType(p_fieldAddress, m_typeTable[fullName].TypeGraph, p_type->Indirection, p_eye);
         }
 
@@ -514,7 +514,7 @@ int ObjectSerializer::DeserializeUserDefinedType(char* p_fieldAddress, TypeNode*
             unsigned* addr32;
             for(int memberIdx = 0; addresses->MoveNext(); ++memberIdx)    
             {
-                assert(memberIdx < p_type->Children.size());
+                _ASSERTE(memberIdx < p_type->Children.size());
                 addr32 = reinterpret_cast<unsigned*>(addresses->Current());
                 DeserializeType(reinterpret_cast<char*>(*addr32), p_type->Children[memberIdx].Ptr32, p_eye);
             }
@@ -532,7 +532,7 @@ int ObjectSerializer::DeserializeUserDefinedType(char* p_fieldAddress, TypeNode*
         unsigned* addr32;
         for(int memberIdx = 0; addresses->MoveNext(); ++memberIdx)    
         {
-            assert(memberIdx < p_type->Children.size());
+            _ASSERTE(memberIdx < p_type->Children.size());
             addr32 = reinterpret_cast<unsigned*>(addresses->Current());
             DeserializeType(reinterpret_cast<char*>(*addr32), p_type->Children[memberIdx].Ptr32, p_eye);
         }
@@ -630,7 +630,7 @@ int ObjectSerializer::DeserializeString(char* p_fieldAddress, TypeNode* p_type, 
 int ObjectSerializer::DeserializeContainerVector(char* p_fieldAddress, TypeNode* p_type, fstream& p_eye)
 {
     // Pointer to vector is not supported
-    assert(p_type->Indirection == false);
+    _ASSERTE(p_type->Indirection == false);
 
     Container* container = reinterpret_cast<Container*>(p_fieldAddress);
     int count;
@@ -651,7 +651,7 @@ int ObjectSerializer::DeserializeContainerVector(char* p_fieldAddress, TypeNode*
 int ObjectSerializer::DeserializeContainerMap(char* p_fieldAddress, TypeNode* p_type, fstream& p_eye)
 {
     // Pointer to map is not supported
-    assert(p_type->Indirection == false);
+    _ASSERTE(p_type->Indirection == false);
 
     Container* container = reinterpret_cast<Container*>(p_fieldAddress);
     int count;
@@ -672,7 +672,7 @@ int ObjectSerializer::DeserializeContainerMap(char* p_fieldAddress, TypeNode* p_
 int ObjectSerializer::DeserializeContainerSet(char* p_fieldAddress, TypeNode* p_type, fstream& p_eye)
 {
     // Pointer to set is not supported
-    assert(p_type->Indirection == false);
+    _ASSERTE(p_type->Indirection == false);
 
     Container* container = reinterpret_cast<Container*>(p_fieldAddress);
     int count;
@@ -693,7 +693,7 @@ int ObjectSerializer::DeserializeContainerSet(char* p_fieldAddress, TypeNode* p_
 int ObjectSerializer::DeserializePair(char* p_fieldAddress, TypeNode* p_type, fstream& p_eye)
 {
     // Pointer to pair is not supported
-    assert(p_type->Indirection == false);
+    _ASSERTE(p_type->Indirection == false);
 
     UserObject* object = reinterpret_cast<UserObject*>(p_fieldAddress);
     object->InitializeAddresses();

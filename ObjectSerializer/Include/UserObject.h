@@ -33,7 +33,7 @@ namespace Serialization
         void InitializeAddresses()
         {
             // catch any type-casting failure by assuring a predefinded values
-            assert(Initialized == m_objectState || Uninitialized == m_objectState);
+            _ASSERTE(Initialized == m_objectState || Uninitialized == m_objectState);
             if(Uninitialized == m_objectState ) 
             {
                 InitializeAddressesAux();

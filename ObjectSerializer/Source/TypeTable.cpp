@@ -12,7 +12,7 @@ void TypeData::Read(string p_path)
     p_path += TypeExtension;
 
     eye.open(p_path.c_str(), ios::binary | ios::in);
-    assert(eye.is_open());
+    _ASSERTE(eye.is_open());
 
     TypeGraph = TypeNode::Read(eye);
 
@@ -33,7 +33,7 @@ void TypeData::Write(string p_path)
     p_path += TypeExtension;
 
     pen.open(p_path.c_str(), ios::binary | ios::out);
-    assert(pen.is_open());
+    _ASSERTE(pen.is_open());
 
     TypeNode::Write(TypeGraph, pen);
 

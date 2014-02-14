@@ -18,7 +18,7 @@ TypeNode::~TypeNode()
     }
     Children.clear();
     --TypeNodesCount;
-    assert(TypeNodesCount >= 0);
+    _ASSERTE(TypeNodesCount >= 0);
 }
 //----------------------------------------------------------------------------------------------
 TypeNode* TypeNode::Clone() const
@@ -68,7 +68,7 @@ void TypeNode::SpecializeChildren(TypeNode* p_template, TypeNode* p_specializati
     vector<TypeNode*>&  templateArgs = p_template->TemplateArguments;
     vector<TypeNode*>&  specArgs     = p_specialization->TemplateArguments;
 
-    assert(specArgs.size() >= templateArgs.size());
+    _ASSERTE(specArgs.size() >= templateArgs.size());
 
     for(int otherArgIdx = 0, argSize = templateArgs.size();
         otherArgIdx < argSize;
@@ -91,7 +91,7 @@ void TypeNode::SpecializeChildren(TypeNode* p_template, TypeNode* p_specializati
             else if (currentNode->Type == DTYPE_Template &&
                 currentNode->UserDefinedType == templateArgs[otherArgIdx]->UserDefinedType)
             {
-                assert(!currentNode->UserDefinedType.empty());
+                _ASSERTE(!currentNode->UserDefinedType.empty());
                 delete currentNode;
                 currentNode = specArgs[otherArgIdx]->Clone();
             }
@@ -104,7 +104,7 @@ void TypeNode::SpecializeTemplateArguments(TypeNode* p_template, TypeNode* p_spe
     vector<TypeNode*>&  templateArgs = p_template->TemplateArguments;
     vector<TypeNode*>&  specArgs     = p_specialization->TemplateArguments;
 
-    assert(specArgs.size() >= templateArgs.size());
+    _ASSERTE(specArgs.size() >= templateArgs.size());
 
     for(int otherArgIdx = 0, argSize = templateArgs.size();
         otherArgIdx < argSize;
@@ -118,13 +118,13 @@ void TypeNode::SpecializeTemplateArguments(TypeNode* p_template, TypeNode* p_spe
 
             if (!currentNode->TemplateArguments.empty())
             {
-                assert(currentNode->Children.empty());
+                _ASSERTE(currentNode->Children.empty());
                 currentNode->SpecializeTemplateArguments(p_template, p_specialization);
             }
             else if (currentNode->Type == DTYPE_Template &&
                 currentNode->UserDefinedType == templateArgs[otherArgIdx]->UserDefinedType)
             {
-                assert(!currentNode->UserDefinedType.empty());
+                _ASSERTE(!currentNode->UserDefinedType.empty());
                 delete currentNode;
                 currentNode = specArgs[otherArgIdx]->Clone();
             }
@@ -182,7 +182,7 @@ void TypeNode::SetTemplateArguments(vector<TypeNode*>& p_templateArguments)
 //----------------------------------------------------------------------------------------------
 void TypeNode::PromoteChildren(bool p_setAsTemplates)
 {
-    assert(!Children.empty());
+    _ASSERTE(!Children.empty());
 
     TemplateArguments.resize(Children.size());
     for(int i = 0; i < Children.size(); ++i)
@@ -236,7 +236,7 @@ void TypeNode::Write(TypeNode* p_root, fstream& p_pen)
             p_pen.write(reinterpret_cast<char*>(&current.Ptr32->Type), sizeof(DataType));
             p_pen.write(reinterpret_cast<char*>(&current.Ptr32->Indirection), sizeof(bool));
 
-            assert(current.Ptr32->UserDefinedType.size() <= MaxTypeNameLength);
+            _ASSERTE(current.Ptr32->UserDefinedType.size() <= MaxTypeNameLength);
             strcpy(buffer, current.Ptr32->UserDefinedType.c_str());
             p_pen.write(reinterpret_cast<char*>(buffer), sizeof(char) * (MaxTypeNameLength + 1));
 
@@ -344,7 +344,7 @@ void TypeNode::FullNameAux(string& p_str, bool p_templateFlag, bool p_childrenFl
 {
     if(Type == DTYPE_UserDefined || Type == DTYPE_Template)
     {
-        assert(!UserDefinedType.empty());
+        _ASSERTE(!UserDefinedType.empty());
         p_str += UserDefinedType;
     }
     else
@@ -426,7 +426,7 @@ string  TypeNode::ToString(DataType p_type)
     case DTYPE_Set:
         return "set";
     default:
-        assert(false);
+        _ASSERTE(false);
     }
 
     return "";
