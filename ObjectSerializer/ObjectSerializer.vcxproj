@@ -63,6 +63,7 @@
       <SmallerTypeCheck>true</SmallerTypeCheck>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
     </ClCompile>
     <Lib>
       <AdditionalDependencies>UnrealCompiler.lib;%(AdditionalDependencies)</AdditionalDependencies>

@@ -363,7 +363,8 @@ int ObjectSerializer::SerializeContainerSet(char* p_fieldAddress, TypeNode* p_ty
     _ASSERTE(p_type->Indirection == false);
     _ASSERTE(p_type->TemplateArguments.size() == 1);
 
-    Container*  container   = reinterpret_cast<Container*>(p_fieldAddress);
+    ISerializable* serializable = reinterpret_cast<ISerializable*>(p_fieldAddress);
+    Container*  container   = dynamic_cast<Container*>(serializable);
     Iterator*   itr         = container->GetIterator();
     int         count       = container->ContainerCount();
 

@@ -193,10 +193,10 @@ TypeNode* TypeResolver::AliasSubstitution(const TypeNode* pUnresolvedType, const
             // Because more than one level of indirection in not supported in serialization
             // and deserialiaztion
 
-            if (pResolvedAliasedType->Indirection && unlinkedUnresolvedAliasedTypeIndirection)
-                DebugBreak();
+            _ASSERTE(pResolvedAliasedType->Indirection ^ unlinkedUnresolvedAliasedTypeIndirection ^ pUnresolvedType->Indirection);
 
             pResolvedAliasedType->Indirection |= unlinkedUnresolvedAliasedTypeIndirection;
+            pResolvedAliasedType->Indirection |= pUnresolvedType->Indirection;
         }
         else
         {

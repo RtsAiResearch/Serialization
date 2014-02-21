@@ -21,8 +21,8 @@ namespace Serialization
     {
         enum ObjectState
         {
-            Initialized     = 0xf0f0f0f0,
-            Uninitialized   = 0x0f0f0f0f
+            Initialized     = 0xfeedbeef,
+            Uninitialized   = 0xdeadbeef
         };
 
     
