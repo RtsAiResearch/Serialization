@@ -17,12 +17,12 @@ namespace Serialization
     class MapIterator;
 
     template<class TKey, class TValue>
-    class SMap : public std::map<TKey, TValue>, public Container
+    class SMap : public Container, public std::map<TKey, TValue>
     {
         SPair<TKey, TValue> m_temp;
     public:
         Iterator*       GetIterator()   { return new MapIterator<TKey, TValue>(this); }
-        string          TypeName() const      { return "SMap"; }
+        std::string          TypeName() const      { return "SMap"; }
         int             TypeSize() const      { return sizeof(SMap<TKey, TValue>); }
         ISerializable*  Prototype() const     { return new SMap<TKey, TValue>; }
         int             ContainerCount(){ return size(); }
@@ -35,12 +35,12 @@ namespace Serialization
     class MapIterator : public Iterator
     {
         bool                                    m_initialized;
-        map<TKey, TValue>*                      m_map;  
-        typename map<TKey, TValue>::iterator    m_current;
+        std::map<TKey, TValue>*                      m_map;  
+        typename std::map<TKey, TValue>::iterator    m_current;
         SPair<TKey, TValue>                      m_pair;
 
     public:
-        MapIterator(map<TKey, TValue>* p_map) :  m_map(p_map), m_current(p_map->begin()), m_initialized(false) {}
+        MapIterator(std::map<TKey, TValue>* p_map) :  m_map(p_map), m_current(p_map->begin()), m_initialized(false) {}
 
         virtual char* Current()
         {

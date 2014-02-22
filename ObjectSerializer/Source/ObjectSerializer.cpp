@@ -13,6 +13,8 @@
 #include <cassert>
 #include <algorithm>
 
+size_t Serialization::sm_lastSerializableObjID = 0;
+
 //----------------------------------------------------------------------------------------------
 ObjectSerializer::ObjectSerializer()
 {

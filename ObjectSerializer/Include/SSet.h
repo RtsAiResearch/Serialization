@@ -13,7 +13,7 @@ namespace Serialization
     class SetIterator;
 
     template<class TKey>
-    class SSet : public std::set<TKey>, public Container
+    class SSet : public Container, public std::set<TKey>
     {
         TKey    m_temp;
     public:

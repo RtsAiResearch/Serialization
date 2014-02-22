@@ -16,6 +16,8 @@ namespace Serialization
         virtual ISerializable*  Prototype() const = 0;
         std::string             CName() const { return typeid(*this).name(); }
     };
+
+    extern size_t sm_lastSerializableObjID;
 }
 
 #define OBJECT_SERIALIZABLE(ClassName) \

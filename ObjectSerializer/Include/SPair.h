@@ -10,7 +10,7 @@
 namespace Serialization
 {
     template<class TKey, class TValue>
-    class SPair : public std::pair<TKey, TValue>, public UserObject
+    class SPair : public UserObject, public std::pair<TKey, TValue>
     {
     public:
                         SPair() : pair(TKey(), TValue()) {}

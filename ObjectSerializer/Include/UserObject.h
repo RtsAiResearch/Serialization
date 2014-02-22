@@ -6,11 +6,8 @@
 #include <stdarg.h>
 #include <cassert>
 #include <typeinfo>
-using namespace std;
 
-#ifndef SVECTOR_H
-    #include "SVector.h"
-#endif
+#include "SVector.h"
 #ifndef SERIALIZABLE_H
     #include "ISerializable.h"
 #endif
@@ -24,26 +21,19 @@ namespace Serialization
             Initialized     = 0xfeedbeef,
             Uninitialized   = 0xdeadbeef
         };
-
     
     public:
-                        UserObject() : m_objectState(Uninitialized) {}
+                        UserObject() : m_objectState(Uninitialized), m_objID(++sm_lastSerializableObjID) {}
         Iterator*       GetIterator()   { return new VectorIterator<char*>(&m_membersAddresses); }
 
         void InitializeAddresses()
         {
             // catch any type-casting failure by assuring a predefinded values
             _ASSERTE(Initialized == m_objectState || Uninitialized == m_objectState);
-            if(Uninitialized == m_objectState ) 
-            {
-                InitializeAddressesAux();
-                m_objectState = Initialized;
-            }
+            m_membersAddresses.clear();
+            InitializeAddressesAux();
+            m_objectState = Initialized;
         }
-
-    private:
-        ObjectState     m_objectState;
-        SVector<char*>   m_membersAddresses;
 
     protected:
         void AddMemberAddress(unsigned nAddresses, ...)
@@ -63,6 +53,11 @@ namespace Serialization
         }
 
         virtual void    InitializeAddressesAux() = 0;
+
+    private:
+        ObjectState         m_objectState;
+        size_t              m_objID;
+        std::vector<char*>  m_membersAddresses;
     };
 
 #define OBJECT_MEMBERS(N, ...) \

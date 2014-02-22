@@ -9,14 +9,14 @@ namespace Serialization
         virtual char*   Current() = 0;
         virtual bool    MoveNext() = 0;
         virtual void    Reset() = 0;
-        ~Iterator() {}
+        virtual ~Iterator() {}
     };
 
     class ITraversable
     {
     public:
         virtual Iterator* GetIterator() = 0;
-        ~ITraversable() {}
+        virtual ~ITraversable() {}
     };
 }
 

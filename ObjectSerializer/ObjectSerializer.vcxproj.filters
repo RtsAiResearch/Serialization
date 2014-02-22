@@ -12,15 +12,15 @@
     <Filter Include="Header Files\FileManager">
       <UniqueIdentifier>{9a19e153-fde8-443f-8f95-f4b63d4ca833}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Container">
-      <UniqueIdentifier>{c9dc0b32-1dd0-4b52-8510-16eb6dc81306}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Type">
       <UniqueIdentifier>{c848cf22-499c-49a6-bfa5-354dcc8d26f2}</UniqueIdentifier>
     </Filter>
     <Filter Include="Resource Files">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+    <Filter Include="Header Files\Container">
+      <UniqueIdentifier>{c9dc0b32-1dd0-4b52-8510-16eb6dc81306}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

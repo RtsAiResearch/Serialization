@@ -2,7 +2,6 @@
 #define SVECTOR_H
 
 #include <vector>
-using namespace std;
 
 #ifndef CONTAINER_H
 #include "Container.h"
@@ -14,15 +13,15 @@ namespace Serialization
     class VectorIterator;
 
     template<class T>
-    class SVector : public vector<T>, public Container
+    class SVector : public Container, public std::vector<T>
     {
         T m_temp;
     public:
                         SVector() {}
                         SVector(size_t p_initialSize, T p_initialValue) : vector(p_initialSize, p_initialValue) {}
-                        SVector(const vector<T>& p_other) { this->clear(); insert(this->begin(), p_other.begin(), p_other.end()); }
+                        SVector(const std::vector<T>& p_other) { this->clear(); insert(this->begin(), p_other.begin(), p_other.end()); }
         Iterator*       GetIterator()       { return new VectorIterator<T>(this); }
-        string          TypeName() const    { return "SVector"; }
+        std::string          TypeName() const    { return "SVector"; }
         int             TypeSize() const    { return sizeof(SVector<T>); }
         ISerializable*   Prototype() const  { return new SVector<T>; }
         int             ContainerCount(){ return size(); }
@@ -35,11 +34,11 @@ namespace Serialization
     class VectorIterator : public Iterator
     {
         bool                            m_initialized;
-        SVector<T>*                      m_vector;  
-        typename vector<T>::iterator    m_current;
+        std::vector<T>*                      m_vector;  
+        typename std::vector<T>::iterator    m_current;
 
     public:
-        VectorIterator(SVector<T>* p_vector) :  m_vector(p_vector), m_initialized(false) {}
+        VectorIterator(std::vector<T>* p_vector) :  m_vector(p_vector), m_initialized(false) {}
         
         char* Current() 
         {
