@@ -2,7 +2,6 @@
 #define SPAIR_H
 
 #include <map>
-using namespace std;
 
 #ifndef USEROBJECT_H
     #include "UserObject.h"
@@ -11,14 +10,14 @@ using namespace std;
 namespace Serialization
 {
     template<class TKey, class TValue>
-    class SPair : public pair<TKey, TValue>, public UserObject
+    class SPair : public UserObject, public std::pair<TKey, TValue>
     {
     public:
                         SPair() : pair(TKey(), TValue()) {}
                         SPair(TKey p_first, TValue p_second) : pair(p_first, p_second) {}
-        string          TypeName() const      { return "SPair"; }
+        std::string     TypeName() const      { return "SPair"; }
         int             TypeSize() const      { return sizeof(SPair<TKey, TValue>); }
-        Serializable*   Prototype() const     { return new SPair<TKey, TValue>; }
+        ISerializable*  Prototype() const     { return new SPair<TKey, TValue>; }
     protected:
 
         void InitializeAddressesAux()

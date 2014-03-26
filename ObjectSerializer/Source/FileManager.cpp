@@ -25,7 +25,7 @@
 FileManager::FileManager()
 {
     int length = GetCurrentDirectory(MAX_PATH_LONG, workingDirectory);
-    assert(length > 0);
+    _ASSERTE(length > 0);
     PushDir(workingDirectory);
 }
 //----------------------------------------------------------------------------------------------
@@ -43,7 +43,7 @@ void FileManager::PushDir(const TCHAR* p_currentDir)
 //----------------------------------------------------------------------------------------------
 void FileManager::PopDir()
 {
-    assert(dirStack.size() > 1);
+    _ASSERTE(dirStack.size() > 1);
     dirStack.pop();
     _tcscpy(currPath, dirStack.top());
     SetCurrentDirectory(currPath);

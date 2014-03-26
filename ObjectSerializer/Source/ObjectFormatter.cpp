@@ -92,7 +92,7 @@ void ObjectFormatter::ExtractTypes(string& p_sourceFileName, TypeTable& p_typeTa
     TypeNode*   lasteRoot = NULL;
 
     eye.open(p_sourceFileName.c_str());
-    assert(eye.is_open());
+    _ASSERTE(eye.is_open());
 
     int i = -1;
     while(!eye.eof())
@@ -189,7 +189,7 @@ void ObjectFormatter::GetAttributes(string& p_line, Attributes& p_attributes)
     vector<string> tokens;
 
     Split(p_line, ' ', pairs);
-    assert(pairs.size() >= 1);
+    _ASSERTE(pairs.size() >= 1);
 
     for(int i = 0, size = pairs.size(); i < size; ++i)
     {
@@ -198,13 +198,13 @@ void ObjectFormatter::GetAttributes(string& p_line, Attributes& p_attributes)
         tokens.clear();
         Split(attribute, '=', tokens);
         // assuming a key=value structure
-        assert(tokens.size() == 2);
+        _ASSERTE(tokens.size() == 2);
 
         string& key = tokens[0];
         string& value = tokens[1];
 
         HeaderAttribute attr = m_headerNameMap[key];
-        assert(p_attributes.find(attr) == p_attributes.end());
+        _ASSERTE(p_attributes.find(attr) == p_attributes.end());
         p_attributes[attr] = value;
     }
 }
@@ -225,7 +225,7 @@ void ObjectFormatter::Split(string& p_str, char p_delim, vector<string>& p_token
 //----------------------------------------------------------------------------------------------
 void ObjectFormatter::GetMemberNode(Attributes& p_attributes, TypeTable& p_typeTable, TypeNode*& p_lastTypeRoot)
 {
-    assert(p_attributes.find(HATTR_Type) != p_attributes.end());
+    _ASSERTE(p_attributes.find(HATTR_Type) != p_attributes.end());
 
     Toolbox::GetCharacterBuffer(p_attributes[HATTR_Type], m_buffer);
     m_lexer->SetCodeBuffer(m_buffer);
@@ -258,7 +258,7 @@ void ObjectFormatter::GetNewTypeNode(Attributes& p_attributes,  TypeTable& p_typ
     }
     */
 
-    assert(p_typeTable.find(newType->UserDefinedType) == p_typeTable.end());
+    _ASSERTE(p_typeTable.find(newType->UserDefinedType) == p_typeTable.end());
 
     TypeData& tableEntry = p_typeTable[newType->UserDefinedType];
     tableEntry.TypeGraph = newType;
@@ -268,7 +268,7 @@ void ObjectFormatter::GetNewTypeNode(Attributes& p_attributes,  TypeTable& p_typ
 //----------------------------------------------------------------------------------------------
 void ObjectFormatter::GetParentNode(Attributes& p_attributes,  TypeTable& p_typeTable, TypeNode*& p_lastTypeRoot)
 {
-    assert(p_attributes.find(HATTR_Parent) != p_attributes.end());
+    _ASSERTE(p_attributes.find(HATTR_Parent) != p_attributes.end());
 
     TypeNode* parent = NULL;
 
@@ -295,7 +295,8 @@ void ObjectFormatter::GetAliasNode(Attributes& p_attributes,  TypeTable& p_typeT
 
     TypeNode* aliasNode = m_parser->TypeGraph();
 
-    assert(p_typeTable.find(aliasNode->UserDefinedType) == p_typeTable.end());
+    if (p_typeTable.find(aliasNode->UserDefinedType) != p_typeTable.end())
+        DebugBreak();
 
     if(p_lastTypeRoot != NULL && !p_lastTypeRoot->TemplateArguments.empty())
         aliasNode->SetTemplateArguments(p_lastTypeRoot->TemplateArguments);
@@ -312,13 +313,13 @@ void ObjectFormatter::WriteTypeNames()
     char    buffer[MaxTypeNameLength + 1];
 
     pen.open(g_TypeNamesFilePath.c_str(), ios::binary | ios::out);
-    assert(pen.is_open());
+    _ASSERTE(pen.is_open());
 
     pen.write(reinterpret_cast<char*>(&size), sizeof(int));
 
     for(int i = 0; i < m_typeNames.size(); ++i)
     {
-        assert(m_typeNames[i].size() <= MaxTypeNameLength);
+        _ASSERTE(m_typeNames[i].size() <= MaxTypeNameLength);
         strcpy(buffer, m_typeNames[i].c_str());
         pen.write(reinterpret_cast<char*>(buffer), sizeof(char) * (MaxTypeNameLength + 1));
     }
@@ -346,7 +347,7 @@ void ObjectFormatter::ReadTypeNames()
     char    buffer[MaxTypeNameLength + 1];
 
     eye.open(g_TypeNamesFilePath.c_str(), ios::binary | ios::in);
-    assert(eye.is_open());
+    _ASSERTE(eye.is_open());
 
     eye.read(reinterpret_cast<char*>(&size), sizeof(int));
 
@@ -381,7 +382,7 @@ void ObjectFormatter::CollectTemplateSpecialization(TypeTable& p_typeTable, Obje
             {
                 // 1. extract object specialization info
                 string specializedTypeName = g_ObjectFactory.FromCName(objItr->second->CName());
-                assert(p_typeTable.find(specializedTypeName) == p_typeTable.end());
+                _ASSERTE(p_typeTable.find(specializedTypeName) == p_typeTable.end());
 
                 // 2. parse specialization string and get specialized type graph
                 Toolbox::GetCharacterBuffer(specializedTypeName, m_buffer);

@@ -6,63 +6,63 @@
 #include <stdarg.h>
 #include <cassert>
 #include <typeinfo>
-using namespace std;
 
-#ifndef SVECTOR_H
-    #include "SVector.h"
-#endif
+#include "SVector.h"
 #ifndef SERIALIZABLE_H
-    #include "Serializable.h"
+    #include "ISerializable.h"
 #endif
 
 namespace Serialization
 {
-    class UserObject : public Serializable
+    class UserObject : public ISerializable
     {
         enum ObjectState
         {
-            Initialized     = 0xf0f0f0f0,
-            Uninitialized   = 0x0f0f0f0f
+            Initialized     = 0xfeedbeef,
+            Uninitialized   = 0xdeadbeef
         };
+    
+    public:
+                        UserObject() : m_objectState(Uninitialized), m_objID(++sm_lastSerializableObjID) {}
+        Iterator*       GetIterator()   { return new VectorIterator<char*>(&m_membersAddresses); }
 
-    private:
-        ObjectState     _objectState;
-        SVector<char*>   _membersaddresses;
+        void InitializeAddresses()
+        {
+            // catch any type-casting failure by assuring a predefinded values
+            _ASSERTE(Initialized == m_objectState || Uninitialized == m_objectState);
+            m_membersAddresses.clear();
+            InitializeAddressesAux();
+            m_objectState = Initialized;
+        }
 
     protected:
-        //void AddMemberAddress(void* p_memberAddress) { _membersaddresses.push_back(reinterpret_cast<char*>(p_memberAddress)); }
-        void AddMemberAddress(int p_nAddresses, ...)
+        void AddMemberAddress(unsigned nAddresses, ...)
         {
             void* memberAddress;
             va_list argList;
             // The va_start macro is usually equivalent to:
             // pArgList = (void*) &p_memberAddress + sizeof (p_memberAddress) ;
-            va_start (argList, p_nAddresses);
-            ++p_nAddresses;
-            while(--p_nAddresses)
+            va_start (argList, nAddresses);
+            ++nAddresses;
+            while(--nAddresses)
             {
                 memberAddress = va_arg(argList, void*);
-                _membersaddresses.push_back(reinterpret_cast<char*>(memberAddress));
+                m_membersAddresses.push_back(reinterpret_cast<char*>(memberAddress));
             }
             va_end (argList) ;
         }
 
         virtual void    InitializeAddressesAux() = 0;
 
-    public:
-                        UserObject() : _objectState(Uninitialized) {}
-        Iterator*       GetIterator()   { return new VectorIterator<char*>(&_membersaddresses); }
-
-        void InitializeAddresses()
-        {
-            // catch any type-casting failure by assuring a predefinded values
-            assert(_objectState == Initialized || _objectState == Uninitialized);
-            if(_objectState == Uninitialized) 
-            {
-                InitializeAddressesAux();
-                _objectState = Initialized;
-            }
-        }
+    private:
+        ObjectState         m_objectState;
+        size_t              m_objID;
+        std::vector<char*>  m_membersAddresses;
     };
+
+#define OBJECT_MEMBERS(N, ...) \
+    protected: \
+        void InitializeAddressesAux() { AddMemberAddress(N, __VA_ARGS__); }
+
 }
 #endif // USEROBJECT_H

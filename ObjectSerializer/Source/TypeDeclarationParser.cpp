@@ -8,6 +8,7 @@ TypeDeclarationParser::TypeDeclarationParser(LexicalAnalyzer* p_scanner) : m_sca
     m_builtInTypes["char"]      = DTYPE_Char;
     m_builtInTypes["short"]     = DTYPE_Short;
     m_builtInTypes["int"]       = DTYPE_Int;
+    m_builtInTypes["unsigned"]  = DTYPE_Unsigned;
     m_builtInTypes["float"]     = DTYPE_Float;
     m_builtInTypes["double"]    = DTYPE_Double;
     m_builtInTypes["array"]     = DTYPE_Array;

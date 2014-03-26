@@ -9,7 +9,7 @@
 #ifndef TOOLBOX_H
 #include "Toolbox.h"
 #endif
-
+#include <Windows.h>
 #include <cassert>
 
 //----------------------------------------------------------------------------------------------
@@ -43,7 +43,7 @@ void TypeResolver::ShallowTypeSubstitution(const string& p_typeName, TypeTable& 
             childIdx < childSize;
             ++childIdx)
         {
-            assert(typeGraph->Children[childIdx].IsType);
+            _ASSERTE(typeGraph->Children[childIdx].IsType);
             currentChild = typeGraph->Children[childIdx].Ptr32;
             p_children.push_back(TypeChild(currentChild->Clone()));
         }
@@ -74,7 +74,7 @@ void TypeResolver::TypeParentSubstitution( TypeData& p_tableEntry, TypeTable& p_
     // substitute parents by going deep until reaching a non-alias node
     for(int i = 0, size = parents.size(); i < size; ++i)
     {
-        assert(parents[i]->Type == DTYPE_UserDefined);
+        _ASSERTE(parents[i]->Type == DTYPE_UserDefined);
 
         resultant = AliasSubstitution(parents[i], p_typeTable);
         parentChildren.clear();
@@ -86,7 +86,7 @@ void TypeResolver::TypeParentSubstitution( TypeData& p_tableEntry, TypeTable& p_
                 childIdx < childSize;
                 ++childIdx)
             {
-                assert(parentChildren[childIdx].IsType);
+                _ASSERTE(parentChildren[childIdx].IsType);
                 TypeNode* currentChild = parentChildren[childIdx].Ptr32;
                 if(!currentChild->TemplateArguments.empty())
                 {
@@ -123,54 +123,124 @@ void TypeResolver::TypeMemberSubstitution( TypeData& p_tableEntry, TypeTable& p_
     oldChildren.insert(oldChildren.begin(), p_children.begin(), p_children.end());
 }
 //----------------------------------------------------------------------------------------------
-TypeNode* TypeResolver::AliasSubstitution(TypeNode* p_typeNode, TypeTable& p_typeTable)
+TypeNode* TypeResolver::AliasSubstitution(const TypeNode* pUnresolvedType, const TypeTable& typeTable)
 {
-    // assume no change in the beginning
-    TypeNode* resultant = p_typeNode;
+    // Expand a typedef to its basic types removing all recursive typedefs
+    // For example:
+    // typedef PlanStepEx* NodeValue
+    // typedef AdjListDigraph<NodeValue> OlcbpPlanDigraph
+    //
+    // We call PlanStepEx* as the 'aliased type' for NodeValue because
+    // NodeValue is used in the code as an alias for PlanStepEx* pointer type
+    // and we call NodeValue as the 'type alias'
+    //
+    // For Example:
+    // Input: OlcbpPlanDigraph*
+    // Output: AdjListDigraph<PlanStepEx*>*
+    //
 
-    if (p_typeNode->Type == DTYPE_UserDefined)
+    // user defined types should always have entries in the type-table
+    if (pUnresolvedType->Type == DTYPE_UserDefined &&
+        typeTable.find(pUnresolvedType->UserDefinedType) == typeTable.end())
+        DebugBreak();
+
+    TypeNode* pResolvedAliasedType = nullptr;
+
+    // If it is a typedef, then resolve it to its basic types
+    // typedef PlanStepEx* NodeValue
+    // 
+    // Input: NodeValue
+    // Output: PlanStepEx*
+    //
+    if (pUnresolvedType->Type == DTYPE_UserDefined &&
+        typeTable.at(pUnresolvedType->UserDefinedType).IsAlias)
     {
-        assert(p_typeTable.find(p_typeNode->UserDefinedType) != p_typeTable.end());
-        
-        TypeData&   tableEntry  = p_typeTable[p_typeNode->UserDefinedType];
-        bool        isAlias     = tableEntry.IsAlias;
+        // The only template argument for NodeValue would be PlanStepEx* if
+        // typedef PlanStepEx* NodeValue exist and and the unresolved node is NodeValue
+        const TypeNode* pLinkedUnresolvedTypeAlias = typeTable.at(pUnresolvedType->UserDefinedType).TypeGraph;
 
-        if(isAlias)
+        // Aliases has only 1 template argument which is its typedef
+        if (pLinkedUnresolvedTypeAlias->TemplateArguments.size() != 1)
+            DebugBreak();
+
+        const TypeNode* pUnlikedUnresolvedAliasedType = pLinkedUnresolvedTypeAlias->TemplateArguments[0];
+        bool unlinkedUnresolvedAliasedTypeIndirection = pUnlikedUnresolvedAliasedType->Indirection;
+        //TypeNode* pLinkedUnresolvedAliasedType = nullptr;
+
+        // If the aliasedType is a user-defined type, then retrieve its complete
+        // type data and persist the indirection info on it
+        if(pUnlikedUnresolvedAliasedType->Type == DTYPE_UserDefined)
         {
-            assert(tableEntry.TypeGraph->TemplateArguments.size() == 1);
+            // Get PlanStepEx complete type info as the unresolved aliased type from the type table
+            TypeNode* pLinkedUnresolvedAliasedType = pUnlikedUnresolvedAliasedType->Clone();
+            pLinkedUnresolvedAliasedType ->Indirection = false;
 
-            TypeNode* aliasChild = tableEntry.TypeGraph->TemplateArguments[0];
-            bool      wasIndirect = false;
-            if(aliasChild->Type == DTYPE_UserDefined)
-            {
-                wasIndirect = aliasChild->Indirection;
-                aliasChild = p_typeTable[aliasChild->UserDefinedType].TypeGraph->Clone();
-                assert(!(resultant->Indirection && p_typeNode->Indirection));
-                aliasChild->Indirection |= wasIndirect;
-                aliasChild->DisposeChildren();
-            }
+            // If the aliased type in the typedef was a pointer then update the indirection
+            // in the retrieved complete type data
+            // For example: PlanStepEx* in typedef PlanStepEx* NodeValue
+            //
+            //pUnresolvedAliasedType->Indirection = unresolvedAliasedTypeIndirection;
+            //pLinkedUnresolvedAliasedType->DisposeChildren();
+            pResolvedAliasedType = AliasSubstitution(pLinkedUnresolvedAliasedType , typeTable);
 
-            resultant = AliasSubstitution(aliasChild, p_typeTable);
+            delete pLinkedUnresolvedAliasedType ;
 
-            // more than 1 level of indirection is not allowed
-            assert(!(resultant->Indirection && p_typeNode->Indirection));
-            resultant->Indirection |= p_typeNode->Indirection;
+            // More than 1 level of indirection is not allowed
+            // For example:
+            // typedef PlanStepEx* NodeValue
+            // typedef NodeValue* NodeValuePtr
+            // Alias substitution for NodeValuePtr is prohibited and not supported
+            // Because more than one level of indirection in not supported in serialization
+            // and deserialiaztion
+
+            _ASSERTE(pResolvedAliasedType->Indirection ^ unlinkedUnresolvedAliasedTypeIndirection ^ pUnresolvedType->Indirection);
+
+            pResolvedAliasedType->Indirection |= unlinkedUnresolvedAliasedTypeIndirection;
+            pResolvedAliasedType->Indirection |= pUnresolvedType->Indirection;
+        }
+        else
+        {
+            pResolvedAliasedType = pUnlikedUnresolvedAliasedType->Clone();
         }
     }
+    else
+    {
+         pResolvedAliasedType = pUnresolvedType->Clone();
+    }
 
+    //..For each template argument of the resolved type
+    //....Make alias substitution for that template argument
+    //
+    // typedef PlanStepEx* NodeValue
+    //
+    // Input: AdjListDigraph<NodeValue>
+    // Output: AdjListDigraph<PlanStepEx*>
+    //
     TypeNode* tempNode = NULL;
-    vector<TypeNode*>& templateArgs = resultant->TemplateArguments;
+    vector<TypeNode*>& templateArgs = pResolvedAliasedType->TemplateArguments;
+
     for(int argIdx = 0, argSize = templateArgs.size();
         argIdx < argSize;
         ++argIdx)
     {
-        tempNode = AliasSubstitution(templateArgs[argIdx], p_typeTable);
+        tempNode = AliasSubstitution(templateArgs[argIdx], typeTable);
 
         Toolbox::MemoryClean(templateArgs[argIdx]);
         templateArgs[argIdx] = tempNode;
     }
 
-    vector<TypeChild>& children = resultant->Children;
+    //..For each member in the resolved type
+    //....Make alias substitution for that member type
+    //
+    // typedef unsigned NodeID
+    // typedef PlanStepEx* NodeValue
+    // typedef set<NodeID> NodeSet
+    // typedef pair<NodeValue, NodeSet>
+    //
+    // Input: AdjListDigraph<PlanStepEx*> such that map<NodeID, NodeEntry> is a class member
+    // Output: AdjListDigraph<PlanStepEx*> such that map<unsigned, pair<PlanStepEx*, set<unsigned> > is a class member
+    //
+    vector<TypeChild>& children = pResolvedAliasedType->Children;
     for(int childIdx = 0, childSize = children.size();
         childIdx < childSize;
         ++childIdx)
@@ -178,13 +248,13 @@ TypeNode* TypeResolver::AliasSubstitution(TypeNode* p_typeNode, TypeTable& p_typ
         if(!children[childIdx].IsType)
             continue;
 
-        tempNode = AliasSubstitution(children[childIdx].Ptr32, p_typeTable);
+        tempNode = AliasSubstitution(children[childIdx].Ptr32, typeTable);
 
         Toolbox::MemoryClean(children[childIdx].Ptr32);
         children[childIdx].Ptr32 = tempNode;
     }
 
-    return resultant->Clone();
+    return pResolvedAliasedType;
 }
 ////----------------------------------------------------------------------------------------------
 //TypeNode* TypeResolver::AliasSubstitution(TypeNode* p_typeNode, TypeTable& p_typeTable)
@@ -192,12 +262,12 @@ TypeNode* TypeResolver::AliasSubstitution(TypeNode* p_typeNode, TypeTable& p_typ
 //    if (p_typeNode->Type == DTYPE_UserDefined)
 //    {
 //        // Recursively substitute each alias with its type
-//        assert(p_typeTable.find(p_typeNode->UserDefinedType) != p_typeTable.end());
+//        _ASSERTE(p_typeTable.find(p_typeNode->UserDefinedType) != p_typeTable.end());
 //        // type already substituted in the table, could be alias or a user type
 //        if(m_completeTypes.find(p_typeNode->UserDefinedType) != m_completeTypes.end())
 //        {
 //            TypeNode* clone = p_typeTable[p_typeNode->UserDefinedType].TypeGraph->Clone();
-//            assert(!(clone->Indirection && p_typeNode->Indirection));
+//            _ASSERTE(!(clone->Indirection && p_typeNode->Indirection));
 //            clone->Indirection |= p_typeNode->Indirection;
 //
 //            /*if(!clone->TemplateArguments.empty())
@@ -212,7 +282,7 @@ TypeNode* TypeResolver::AliasSubstitution(TypeNode* p_typeNode, TypeTable& p_typ
 //
 //            if(isAlias)
 //            {
-//                assert(tableEntry.TypeGraph->TemplateArguments.size() == 1);
+//                _ASSERTE(tableEntry.TypeGraph->TemplateArguments.size() == 1);
 //
 //                TypeNode* aliasChild    = tableEntry.TypeGraph->TemplateArguments[0];
 //                TypeNode* resultant     = NULL;
@@ -222,7 +292,7 @@ TypeNode* TypeResolver::AliasSubstitution(TypeNode* p_typeNode, TypeTable& p_typ
 //
 //                resultant = AliasSubstitution(aliasChild, p_typeTable);
 //                // more than 1 level of indirection is not allowed
-//                assert(!(resultant->Indirection && p_typeNode->Indirection));
+//                _ASSERTE(!(resultant->Indirection && p_typeNode->Indirection));
 //
 //                m_completeTypes.insert(tableEntry.TypeGraph->UserDefinedType);
 //
@@ -268,7 +338,7 @@ TypeNode* TypeResolver::AliasSubstitution(TypeNode* p_typeNode, TypeTable& p_typ
 //----------------------------------------------------------------------------------------------
 void TypeResolver::Specialize(TypeNode* p_specialization, TypeData& p_typeTemplate, TypeTable& p_typeTable)
 {
-    assert(p_typeTable.find(p_specialization->FullName()) == p_typeTable.end());
+    _ASSERTE(p_typeTable.find(p_specialization->FullName()) == p_typeTable.end());
     // 1. create entry for the specialized type by taking a clone from the template type
     TypeData& typeSpecialization    = p_typeTable[p_specialization->FullName()];
     typeSpecialization.Parents      = p_typeTemplate.Parents;
@@ -280,8 +350,8 @@ void TypeResolver::Specialize(TypeNode* p_specialization, TypeData& p_typeTempla
 //----------------------------------------------------------------------------------------------
 void TypeResolver::SpecializeAux(TypeNode* p_targetType, TypeNode* p_specialization, TypeTable& p_typeTable)
 {
-    assert(!p_specialization->TemplateArguments.empty());
-    assert(p_targetType->UserDefinedType == p_specialization->UserDefinedType);
+    _ASSERTE(!p_specialization->TemplateArguments.empty());
+    _ASSERTE(p_targetType->UserDefinedType == p_specialization->UserDefinedType);
 
     p_targetType->SpecializeChildren(p_targetType, p_specialization);
     p_targetType->SpecializeTemplateArguments(p_targetType, p_specialization);
