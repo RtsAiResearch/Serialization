@@ -63,6 +63,9 @@ namespace Serialization
 #define OBJECT_MEMBERS(N, ...) \
     protected: \
         void InitializeAddressesAux() { AddMemberAddress(N, __VA_ARGS__); }
+#define OBJECT_MEMBERS_P(P, N, ...) \
+    protected: \
+        void InitializeAddressesAux() { P::InitializeAddressesAux(); AddMemberAddress(N, __VA_ARGS__); }
 
 }
 #endif // USEROBJECT_H
