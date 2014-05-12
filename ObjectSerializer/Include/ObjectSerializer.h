@@ -47,7 +47,7 @@ protected:
 public:
     ObjectSerializer();
     TypeTable& TypeTable() { return m_typeTable; }
-    void Serialize(UserObject* p_object, string p_objectFileName);
+    void Serialize(const UserObject* p_object, string p_objectFileName);
     void Deserialize(UserObject* p_object, string p_objectFileName);
     static ObjectSerializer& Instance() { static ObjectSerializer instance; return instance; }
     void PerformLateBinding( UserObject* p_object, TypeNode*& p_type );

@@ -85,7 +85,7 @@ bool ObjectSerializer::IsAncestor( const string& candidateAncestor, const string
     return false;
 }
 //----------------------------------------------------------------------------------------------
-void ObjectSerializer::Serialize(UserObject* p_object, string p_objectFileName)
+void ObjectSerializer::Serialize(const UserObject* p_object, string p_objectFileName)
 {
     fstream pen;
     pen.open(p_objectFileName.c_str(), ios::binary | ios::out);
@@ -95,7 +95,7 @@ void ObjectSerializer::Serialize(UserObject* p_object, string p_objectFileName)
     _ASSERTE(m_typeTable.find(typeName) != m_typeTable.end());
 
     TypeData& typeData = m_typeTable[typeName];
-    SerializeType(reinterpret_cast<char*>(p_object), typeData.TypeGraph, pen);
+    SerializeType(reinterpret_cast<char*>(const_cast<UserObject*>(p_object)), typeData.TypeGraph, pen);
 
     pen.close();
 }

@@ -1,8 +1,6 @@
 #ifndef DELEGATE_H
 #define DELEGATE_H
 
-#include <cassert>
-
 template<class TSender>
 class BaseDelegate
 {
@@ -32,7 +30,6 @@ public:
         const Delegate<TReciever, TSender>* other;
 
         other = static_cast<const Delegate<TReciever, TSender>*>(p_other);
-        assert(other != NULL);
 
         return other->m_ptr2Object == m_ptr2Object && other->m_ptr2Func == m_ptr2Func;
     }

@@ -3,7 +3,6 @@
 
 #include <string>
 #include <vector>
-using namespace std;
 
 enum
 {
@@ -17,7 +16,7 @@ struct TokenType
     int Id;
 
     // name representing the token type
-    string Name;
+    std::string Name;
 
     // token can be ignored by the lexical analyzer (comment, whitespace, etc...)
     bool IsIgnored;
@@ -37,18 +36,19 @@ struct TokenType
     // token identifies a reserved language keyword
     bool IsReserved;
 
-    TokenType(int p_id, const string& p_name) : Id(p_id), Name(p_name), IsError(false), IsSpecial(false), IsIdentifier(false), IsComposite(false), IsIgnored(false), IsReserved(false)
+    TokenType(int p_id, const std::string& p_name) :
+        Id(p_id), Name(p_name), IsError(false), IsSpecial(false), IsIdentifier(false), IsComposite(false), IsIgnored(false), IsReserved(false)
     {}
 };
 
 const int MaxTokenTypes = 128;
 extern int EOFTypeId;
-extern vector<TokenType*> g_TokenTypesMap;
+extern std::vector<TokenType*> g_TokenTypesMap;
 
 struct TokenValue
 {
     // the lexeme that represents the token type pattern
-    string      Lexeme;
+    std::string      Lexeme;
 
     // the row in which the beginning of the lexeme resides
     int         Row;
@@ -59,7 +59,7 @@ struct TokenValue
     // this can be any extra 32-bit data saved with the token, such as index, pointer, etc..
     unsigned    Data;
 
-    TokenValue(const string& p_lexeme, int p_row, int p_column) : Lexeme(p_lexeme), Row(p_row), Column(p_column), Data(0)
+    TokenValue(const std::string& p_lexeme, int p_row, int p_column) : Lexeme(p_lexeme), Row(p_row), Column(p_column), Data(0)
     {}
 };
 
