@@ -29,6 +29,45 @@ namespace Serialization
         void            Clear()         { clear(); }
         char*           GetTemp()       { return reinterpret_cast<char*>(&m_temp); }
         void            AddTemp()       { insert(m_temp); }
+
+        void Keys(std::vector<TKey>& keys) const 
+        {
+            keys.resize(size());
+
+            int i = 0;
+            for(std::map<TKey, TValue>::const_iterator itr = begin();
+                itr != end();
+                ++itr, ++i)
+            {
+                keys[i] = itr->first;
+            }
+        }
+
+        void Values(std::vector<TValue>& values) const
+        {
+            values.resize(size());
+
+            int i = 0;
+            for(std::map<TKey, TValue>::const_iterator itr = begin();
+                itr != end();
+                ++itr, ++i)
+            {
+                values[i] = itr->second;
+            }
+        }
+
+        bool TryGet(const TKey& key, TValue& value) const
+        {
+            if(count(key) > 0)
+            {
+                value = at(key);
+                return true;
+            }
+
+            return false;
+        }
+
+        bool Contains(const TKey& key) { return count(key) > 0; }
     };
     //----------------------------------------------------------------------------------------------
     template<class TKey, class TValue>
