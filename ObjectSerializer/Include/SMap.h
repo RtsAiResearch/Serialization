@@ -67,7 +67,7 @@ namespace Serialization
             return false;
         }
 
-        bool Contains(const TKey& key) { return count(key) > 0; }
+        bool Contains(const TKey& key) const { return count(key) > 0; }
     };
     //----------------------------------------------------------------------------------------------
     template<class TKey, class TValue>

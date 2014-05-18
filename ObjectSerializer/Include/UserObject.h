@@ -52,7 +52,7 @@ namespace Serialization
             va_end (argList) ;
         }
 
-        virtual void    InitializeAddressesAux() = 0;
+        virtual void InitializeAddressesAux() {};
 
     private:
         ObjectState         m_objectState;
