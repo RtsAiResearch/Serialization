@@ -6,20 +6,24 @@
 #include <stdio.h>
 
 //----------------------------------------------------------------------------------------------
-void ObjectFactory::AddPrototype(UserObject* p_prototype)
+UserObject* ObjectFactory::AddPrototype(UserObject* p_prototype)
 {
     _ASSERTE(p_prototype != NULL);
     string cname = p_prototype->CName();
     string tname = p_prototype->TypeName();
     m_cNameToFullNameTable[cname] = tname;
     m_prototypes[p_prototype->TypeName()] = p_prototype;
+
+    return p_prototype;
 }
 //----------------------------------------------------------------------------------------------
-void ObjectFactory::AddPrototype(UserObject* p_prototype, char* p_fullName)
+UserObject* ObjectFactory::AddPrototype(UserObject* p_prototype, char* p_fullName)
 {
     _ASSERTE(p_prototype != NULL);
     m_cNameToFullNameTable[p_prototype->CName()] = p_fullName;
     m_prototypes[p_fullName] = p_prototype;
+
+    return p_prototype;
 }
 //----------------------------------------------------------------------------------------------
 UserObject* ObjectFactory::GetObject(const string& p_typeName)
