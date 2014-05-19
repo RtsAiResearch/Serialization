@@ -1,6 +1,7 @@
 #ifndef TYPETABLE_H
 #include "TypeTable.h"
 #endif
+#include "TypeNode.h"
 
 #include <fstream>
 #include <cassert>

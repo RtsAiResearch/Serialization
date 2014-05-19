@@ -8,6 +8,7 @@
 #ifndef OBJECTFACTORY_H
     #include "ObjectFactory.h"
 #endif
+#include "TypeNode.h"
 
 #include <set>
 using namespace std;
