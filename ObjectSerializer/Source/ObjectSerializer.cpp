@@ -9,6 +9,9 @@
 #ifndef SVECTOR_H
     #include "SVector.h"
 #endif
+#include "TypeTable.h"
+#include "ObjectFormatter.h"
+#include "TypeNode.h"
 #include <fstream>
 #include <cassert>
 #include <algorithm>
