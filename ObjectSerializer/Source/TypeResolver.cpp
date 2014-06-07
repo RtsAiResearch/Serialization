@@ -234,8 +234,8 @@ TypeNode* TypeResolver::AliasSubstitution(const TypeNode* pUnresolvedType, const
     //
     // typedef unsigned NodeID
     // typedef PlanStepEx* NodeValue
-    // typedef set<NodeID> NodeSet
-    // typedef pair<NodeValue, NodeSet>
+    // typedef set<NodeID> NodeSerializedSet
+    // typedef pair<NodeValue, NodeSerializedSet>
     //
     // Input: AdjListDigraph<PlanStepEx*> such that map<NodeID, NodeEntry> is a class member
     // Output: AdjListDigraph<PlanStepEx*> such that map<unsigned, pair<PlanStepEx*, set<unsigned> > is a class member
