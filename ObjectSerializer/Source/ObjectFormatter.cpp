@@ -15,8 +15,9 @@
 #endif
 
 #ifndef TYPERESOLVER_H
-    #include "TypeResolver.h"
+#include "TypeResolver.h"
 #endif
+#include <memory>
 
 string g_TypeInfoPath;
 string g_TypeLexerFilePath;
@@ -254,7 +255,7 @@ void ObjectFormatter::GetNewTypeNode(Attributes& p_attributes,  TypeTable& p_typ
     /*vector<string> parents;
     if(p_attributes.find(HATTR_Parent) != p_attributes.end())
     {
-        Split(p_attributes[HATTR_Parent], ',', parents);
+    Split(p_attributes[HATTR_Parent], ',', parents);
     }
     */
 
@@ -361,19 +362,20 @@ void ObjectFormatter::ReadTypeNames()
     eye.close();
 }
 //----------------------------------------------------------------------------------------------
-void ObjectFormatter::FinalizeTypeTable(TypeTable& p_typeTable, ObjectTable& p_objectTable)
+void ObjectFormatter::FinalizeTypeTable(TypeTable& p_typeTable, ObjectFactoryMap& p_objectTable)
 {
     // 1. Collect template type specialization
     CollectTemplateSpecialization(p_typeTable, p_objectTable);
 }
 //----------------------------------------------------------------------------------------------
-void ObjectFormatter::CollectTemplateSpecialization(TypeTable& p_typeTable, ObjectTable& p_objectTable)
+void ObjectFormatter::CollectTemplateSpecialization(TypeTable& p_typeTable, ObjectFactoryMap& p_objectTable)
 {
-    for(ObjectTable::iterator objItr = p_objectTable.begin();
+    for(ObjectFactoryMap::iterator objItr = p_objectTable.begin();
         objItr != p_objectTable.end();
         ++objItr)
     {
-        string typeName = objItr->second->TypeName();
+        shared_ptr<UserObject> pObj(objItr->second());
+        string typeName = pObj->TypeName();
         if(p_typeTable.find(typeName) != p_typeTable.end())
         {
             TypeData& typeTemplate = p_typeTable[typeName];
@@ -381,7 +383,7 @@ void ObjectFormatter::CollectTemplateSpecialization(TypeTable& p_typeTable, Obje
             if(!typeTemplate.TypeGraph->TemplateArguments.empty())
             {
                 // 1. extract object specialization info
-                string specializedTypeName = g_ObjectFactory.FromCName(objItr->second->CName());
+                string specializedTypeName = g_ObjectFactory.FromCName(pObj->CName());
                 _ASSERTE(p_typeTable.find(specializedTypeName) == p_typeTable.end());
 
                 // 2. parse specialization string and get specialized type graph
