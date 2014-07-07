@@ -510,7 +510,7 @@ int ObjectSerializer::DeserializeUserDefinedType(char* p_fieldAddress, TypeNode*
 
             p_eye.read(buffer, MaxTypeNameLength + 1);
             typeName = buffer;
-            object = static_cast<UserObject*>(g_ObjectFactory.GetObject(typeName)->Prototype());
+            object = static_cast<UserObject*>(g_ObjectFactory.Create(typeName));
 
             PerformLateBinding(object, p_type);
 
